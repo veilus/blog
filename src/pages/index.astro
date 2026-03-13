@@ -1,8 +1,15 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
+const posts = (await getCollection("blog"))
+	.filter((post) => !post.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!DOCTYPE html>
@@ -25,6 +32,93 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 			.welcome .accent {
 				color: var(--accent);
 			}
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 2rem;
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul li {
+				width: calc(50% - 1rem);
+			}
+			ul li * {
+				text-decoration: none;
+				transition: 0.2s ease;
+			}
+			ul li:first-child {
+				width: 100%;
+				margin-bottom: 1rem;
+				text-align: center;
+			}
+			ul li:first-child img {
+				width: 100%;
+			}
+			ul li:first-child .title {
+				font-size: 2em;
+			}
+			ul li img {
+				margin-bottom: 0.5rem;
+				border-radius: 12px;
+				border: 1px solid var(--border);
+			}
+			ul li a {
+				display: block;
+				padding: 1em;
+				border-radius: 12px;
+				border: 1px solid transparent;
+				transition: border-color 0.2s ease, transform 0.2s ease;
+			}
+			ul li a:hover {
+				border-color: var(--border);
+				transform: translateY(-2px);
+			}
+			.title {
+				margin: 0;
+				color: var(--text-primary);
+				line-height: 1.3;
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					sans-serif;
+				font-weight: 600;
+			}
+			.description {
+				margin: 0.5em 0 0 0;
+				color: var(--text-secondary);
+				font-size: 0.9em;
+				line-height: 1.5;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.date {
+				margin: 0.5em 0 0 0;
+				color: var(--text-secondary);
+				font-family: "Inter", sans-serif;
+				font-size: 0.85em;
+			}
+			ul li a:hover .title {
+				color: var(--accent);
+			}
+			ul a:hover img {
+				box-shadow: var(--box-shadow);
+			}
+			@media (max-width: 720px) {
+				ul {
+					gap: 0.5em;
+				}
+				ul li {
+					width: 100%;
+					text-align: center;
+				}
+				ul li:first-child {
+					margin-bottom: 0;
+				}
+				ul li:first-child .title {
+					font-size: 1.4em;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -40,6 +134,35 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 					multi-account management, browser fingerprinting, and
 					automation.
 				</p>
+			</section>
+			<section>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`}>
+									{post.data.heroImage && (
+										<Image
+											width={720}
+											height={360}
+											src={post.data.heroImage}
+											alt=""
+										/>
+									)}
+									<h4 class="title">{post.data.title}</h4>
+									<p class="description">
+										{post.data.description}
+									</p>
+									<p class="date">
+										<FormattedDate
+											date={post.data.pubDate}
+										/>
+									</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
 			</section>
 		</main>
 		<Footer />
