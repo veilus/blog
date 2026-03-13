@@ -1,62 +1,82 @@
 ---
-title: "Giới thiệu Veilus: Trình duyệt anti-detect mã nguồn mở"
-description: "Veilus là trình duyệt anti-detect dựa trên Chromium, thay đổi fingerprint ở cấp engine — không dùng JavaScript injection. 100% mã nguồn mở."
-pubDate: "2026-03-12"
-lang: "vi"
-tags: ["announcement", "veilus"]
+title: "Giới thiệu Veilus: Quản lý nhiều tài khoản mà không bị khóa"
+description: "Veilus là trình duyệt anti-detect miễn phí, chạy trên nền Chromium gốc. Quản lý nhiều tài khoản trên một máy mà không bị phát hiện hay khóa."
+pubDate: "Mar 12 2026"
+heroImage: '../../assets/blog-placeholder-5.jpg'
+lang: vi
+tags:
+  - announcement
+  - product
 ---
 
-## Vấn đề với browser fingerprinting
+Bạn chạy nhiều tài khoản quảng cáo trên Facebook. Một hôm đăng nhập vào, thấy hàng loạt tài khoản bị khóa cùng lúc. Hoặc bạn bán hàng trên nhiều shop Shopee, và nền tảng phát hiện tất cả đều từ cùng một máy tính.
 
-Nếu bạn từng quản lý nhiều tài khoản online, bạn hiểu cảm giác này. Website theo dõi "dấu vân tay" trình duyệt của bạn — kết hợp từ độ phân giải màn hình, font chữ, WebGL renderer, canvas hash, và hàng chục tín hiệu khác — để nhận diện bạn qua các phiên truy cập.
+Chuyện này xảy ra vì nền tảng không chỉ theo dõi IP. Họ theo dõi **browser fingerprint** — một tổ hợp gồm độ phân giải màn hình, font chữ, WebGL renderer, canvas hash, và hàng chục tín hiệu khác. Cookie xóa được, VPN đổi được, nhưng fingerprint thì không.
 
-Kết quả? Dù bạn dùng VPN hay proxy, trình duyệt vẫn "tố" bạn.
+**Đó là lý do bạn cần trình duyệt anti-detect.**
 
-## Giải pháp hiện tại — và giới hạn của chúng
+## Ai cần trình duyệt anti-detect?
 
-Các công cụ anti-detect hiện tại như Multilogin, GoLogin, AdsPower đều dùng cùng một cách: **JavaScript injection**. Họ chạy script để chặn các lệnh gọi API của trình duyệt và trả về giá trị giả.
+| Đối tượng | Vấn đề thường gặp |
+|-----------|-------------------|
+| **Chạy quảng cáo** | Facebook/Google link tài khoản rồi khóa hàng loạt |
+| **Bán hàng đa nền tảng** | Shopee/Lazada/Amazon phát hiện nhiều shop từ một máy |
+| **Quản lý mạng xã hội** | Instagram/TikTok khóa khi phát hiện cùng thiết bị |
+| **Thu thập dữ liệu** | Bị chặn IP sau vài trăm request |
+| **Crypto/Airdrop** | Bị phát hiện Sybil khi dùng nhiều ví |
 
-Vấn đề là gì?
+Nếu bạn gặp những vấn đề trên, Veilus sinh ra là để giải quyết chúng.
 
-- **JS injection có thể bị phát hiện.** Website có thể detect việc inject script, kiểm tra mâu thuẫn giữa giá trị thật và giả, hoặc dùng timing attack
-- **Đắt.** Multilogin từ $99/tháng, GoLogin từ $49/tháng
-- **Closed-source.** Bạn tin tưởng code độc quyền mà không thể kiểm tra nó làm gì
+## Veilus là gì?
 
-## Veilus khác gì?
+Veilus là **trình duyệt anti-detect miễn phí**, chạy trên nền Chromium gốc — không phải Electron. Mỗi profile trình duyệt có một fingerprint riêng biệt, nên mỗi tài khoản trông như đang chạy trên một máy tính khác.
 
-Veilus không patch trình duyệt bằng JavaScript. Thay vào đó, chúng tôi **chỉnh sửa trực tiếp mã nguồn Chromium**.
+## Khác gì GoLogin, Multilogin?
 
-Điều này có nghĩa là:
+Hầu hết trình duyệt anti-detect dùng Electron — tức là chạy Chromium bên trong Chromium. Veilus biên dịch trực tiếp từ mã nguồn Chromium:
 
-- **Quản lý fingerprint ở cấp engine** — Thay đổi tại C++, không phải JavaScript
-- **Không có artifact injection** — Không có script để detect vì giá trị đến từ chính engine
-- **Fingerprint nhất quán** — Không mâu thuẫn giữa các API layer khác nhau
-- **Hiệu năng tốt hơn** — Không overhead từ việc chặn mỗi API call
+| Chỉ số | Veilus (Chromium gốc) | Trình duyệt dùng Electron |
+|--------|-----------------------|---------------------------|
+| **RAM mỗi profile** | ~100 MB | 300–500 MB |
+| **Tốc độ tải trang** | Nhanh gấp 3x | Bình thường |
+| **Rủi ro phát hiện** | Không có dấu vết Electron | Phát hiện được qua Electron |
 
-## Dùng được chưa?
+Mở 10 profile cùng lúc: **1 GB vs 3–5 GB RAM**. Chạy 50 profile thì khác biệt càng rõ.
 
-Veilus đang trong giai đoạn phát triển tích cực. Core engine modifications đang được xây dựng, hướng tới bản release đầu tiên với:
+## Tính năng chính
 
-- Canvas và WebGL fingerprint management
-- Navigator và screen API modifications
-- Multi-profile isolation
-- Proxy integration theo profile
+### Fingerprint Engine
+Mỗi profile có fingerprint nhất quán, được tạo từ một seed duy nhất — Canvas, WebGL, AudioContext, fonts, screen, WebRTC. Tất cả đều liên kết logic như thiết bị thật.
 
-## Free thật không?
+### VeilusFlow — Tự động hóa
+Ghi lại thao tác trình duyệt (click, gõ, lướt) rồi phát lại trên nhiều profile. Không cần code. Phù hợp để:
+- Warm tài khoản quảng cáo tự động
+- Đăng bài hàng loạt
+- Thu thập dữ liệu sản phẩm
+- Chạy workflow lặp lại trên 50+ profile
 
-**Thật.** Veilus là 100% mã nguồn mở. Mọi dòng code đều có thể kiểm tra được. Không có trình duyệt anti-detect nào khác cung cấp mức độ minh bạch này.
+### Chia sẻ nhóm
+Chia sẻ profile cho team — cookies, storage, fingerprint đều được đồng bộ. Người khác đăng nhập vào là làm việc tiếp được ngay.
 
-Toàn bộ code có trên [GitHub](https://github.com/nicholasgriffintn/veilus).
+## Hoạt động thế nào?
 
-## Tham gia cộng đồng
+Mỗi profile trong Veilus có 3 lớp cách ly:
 
-Veilus được xây dựng công khai, và chúng tôi rất muốn có sự tham gia của bạn:
+1. **Fingerprint riêng** — website nhìn thấy một thiết bị khác cho mỗi profile
+2. **Storage riêng** — cookies, localStorage, cache hoàn toàn tách biệt
+3. **Proxy riêng** — mỗi profile dùng IP khác nhau
 
-- ⭐ **Star trên [GitHub](https://github.com/nicholasgriffintn/veilus)** — Theo dõi quá trình phát triển
-- 💬 **Tham gia [Telegram](https://t.me/veilusbrowser)** — Chat với team và cộng đồng
-- 🐦 **Follow trên [X](https://x.com/veilusbrowser)** — Cập nhật tin tức mới nhất
-- 📖 **Đọc [tài liệu](https://docs.veilus.io)** — Tìm hiểu kiến trúc và cách đóng góp
+Mở Profile A và Profile B cạnh nhau — như đang dùng hai máy tính khác nhau, trên hai mạng khác nhau.
 
-Dù bạn là developer quan tâm đến Chromium internals, researcher nghiên cứu fingerprinting, hay đơn giản là muốn một công cụ privacy tốt hơn — đều có chỗ cho bạn trong cộng đồng Veilus.
+## Free không?
 
-Cùng xây dựng một thứ minh bạch. 🚀
+**Free.** 5 profile vĩnh viễn, không giới hạn thời gian, không cần thẻ tín dụng. Tải về là dùng được luôn.
+
+## Bắt đầu
+
+Không muốn bị khóa tài khoản nữa?
+
+- 🌐 **Tải về**: [veilus.io](https://veilus.io)
+- 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
+- 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
+- 🐙 **GitHub**: [github.com/veilus](https://github.com/nicholasgriffintn/veilus)

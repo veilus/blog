@@ -1,72 +1,99 @@
 ---
-title: "Introducing Veilus: An Open-Source Anti-Detect Browser"
-description: "Meet Veilus — a Chromium-based anti-detect browser that modifies fingerprints at the engine level, not through detectable JavaScript injection. 100% open source."
-pubDate: "2026-03-12"
-lang: "en"
-tags: ["announcement", "veilus"]
+title: "Introducing Veilus: Manage Multiple Accounts Without Getting Banned"
+description: "Veilus is a free anti-detect browser built on native Chromium. Manage multiple accounts on one computer with unique fingerprints, isolated profiles, and built-in automation."
+pubDate: "Mar 12 2026"
+heroImage: '../../assets/blog-placeholder-3.jpg'
+lang: en
+tags:
+  - announcement
+  - product
 ---
 
-## The Problem With Browser Fingerprinting
+If you've ever had an ad account locked, a marketplace listing flagged, or a social media profile banned because a platform detected you were running multiple accounts from the same computer — you know the frustration.
 
-If you've ever managed multiple online accounts, you know the struggle. Websites track your browser fingerprint — a unique combination of your screen resolution, installed fonts, WebGL renderer, canvas hash, and dozens of other signals — to identify you across sessions.
+You clear cookies. Use incognito mode. Maybe try a VPN. But it keeps happening.
 
-The result? Even with VPNs and proxy servers, your browser gives you away.
+That's because modern platforms don't just track your IP address. They track your **browser fingerprint** — a unique combination of your screen resolution, installed fonts, WebGL renderer, canvas hash, and dozens of other signals that make your browser as identifiable as a physical fingerprint.
 
-## The Current Landscape
+**No amount of cookie clearing or VPN switching changes your browser fingerprint.**
 
-Existing anti-detect solutions approach this problem with **JavaScript injection**: they run scripts that intercept browser API calls and return spoofed values. Tools like Multilogin, GoLogin, and AdsPower all use this technique.
+## Who Needs an Anti-Detect Browser?
 
-It works — until it doesn't.
+If you manage multiple accounts on any platform, you've likely been burned by detection systems:
 
-The fundamental weakness? **JS injection is detectable.** Websites can detect the injection itself, check for inconsistencies between spoofed and real values, or use timing attacks to expose the interception layer. It's an arms race where defenders have the advantage.
+| User | Pain Point |
+|------|------------|
+| **Affiliate Marketers** | Facebook and Google linking your ad accounts, banning them in waves |
+| **E-commerce Sellers** | Amazon or Shopee flagging multiple storefronts as the same seller |
+| **Social Media Managers** | Instagram or TikTok suspending accounts detected from the same device |
+| **Web Scrapers** | Getting IP-banned after a few hundred requests |
+| **Crypto/Airdrop** | DeFi protocols detecting Sybil behavior across wallets |
 
-And these tools are **expensive** and **closed-source**. You're trusting proprietary code with your security without being able to verify what it actually does.
+The solution is an **anti-detect browser** — a tool that gives each browser profile its own unique digital fingerprint, so every account looks like it's running on a completely different computer.
 
-## Veilus: A Different Approach
+## What Is Veilus?
 
-Veilus takes a fundamentally different approach. Instead of patching browser APIs with JavaScript after the page loads, we **modify the Chromium source code itself**.
+Veilus is a **free anti-detect browser** built on a native Chromium engine. Here's what makes it different:
 
-This means:
+### Native Chromium, Not Electron
 
-- **Native fingerprint management** — Modified at the C++ engine level, not JavaScript
-- **No injection artifacts** — There's no script to detect because values come from the engine itself
-- **Consistent fingerprints** — No mismatches between different API layers
-- **Better performance** — No overhead from intercepting every API call
+Most anti-detect browsers are built on Electron — a framework that bundles Chromium inside Node.js. So when you open a profile, you're running Chromium inside Chromium.
 
-| Approach | Detection Risk | Performance | Transparency |
-|----------|---------------|-------------|--------------|
-| JS Injection (GoLogin, Multilogin) | Higher — injection detectable | Slower — API interception overhead | Closed source |
-| Veilus (Chromium-level) | Lower — native engine values | Faster — no interception layer | 100% open source |
+Veilus compiles directly against the Chromium source code:
 
-## 100% Open Source
+| Metric | Veilus (Native) | Electron-based |
+|--------|----------------|----------------|
+| **RAM per profile** | ~100 MB | 300–500 MB |
+| **Page load speed** | 3x faster | Baseline |
+| **Detection risk** | No Electron artifacts | Detectable via Electron signatures |
 
-This is where Veilus truly stands apart. **Every line of code is open and auditable.** No other anti-detect browser offers this level of transparency.
+With 10 profiles open, that's **1 GB vs 3–5 GB of RAM**. If you run 50+ profiles, the difference is game-changing.
 
-We believe that privacy tools should be verifiable. You shouldn't have to trust a company's marketing — you should be able to read the code yourself.
+### Fingerprint Engine
 
-Our entire codebase is available on [GitHub](https://github.com/nicholasgriffintn/veilus), including:
-- The Chromium patches that modify fingerprint-related APIs
-- The profile management system
-- Build scripts and documentation
+Each profile gets a mathematically consistent fingerprint generated from a single seed value. Nothing is random — the values make sense together, the way a real device's fingerprint would:
 
-## What's Next
+- **Canvas** — Unique 2D rendering via subtle pixel manipulation
+- **WebGL** — Spoofed GPU renderer and vendor strings
+- **AudioContext** — Modified audio processing signature
+- **Navigator** — Customized user agent, platform, hardware concurrency
+- **Fonts** — OS-appropriate font list
+- **Screen** — Resolution, color depth, device pixel ratio
+- **WebRTC** — Built-in IP leak protection
 
-We're in active development. The core engine modifications are underway, and we're building toward a first release that includes:
+### VeilusFlow Automation
 
-- Canvas and WebGL fingerprint management
-- Navigator and screen API modifications
-- Multi-profile isolation
-- Proxy integration per profile
+Record browser actions visually — clicks, typing, scrolling, navigation — and Veilus auto-generates a replayable script. No coding required.
 
-## Join the Community
+Use cases:
+- Auto-warm ad accounts
+- Automate social media engagement
+- Scrape product data across storefronts
+- Run repetitive workflows across 50+ profiles
 
-Veilus is built in the open, and we'd love your involvement:
+### Team Collaboration
 
-- ⭐ **Star us on [GitHub](https://github.com/nicholasgriffintn/veilus)** — Follow development and contribute
-- 💬 **Join our [Telegram group](https://t.me/veilusbrowser)** — Chat with the team and community
-- 🐦 **Follow us on [X](https://x.com/veilusbrowser)** — Stay updated on releases and news
-- 📖 **Read the [docs](https://docs.veilus.io)** — Explore the architecture and contribute
+Share browser profiles with your team. Each profile's cookies, storage, and fingerprint are synced so team members can pick up exactly where you left off.
 
-Whether you're a developer interested in Chromium internals, a researcher studying fingerprinting, or someone who just wants a better privacy tool — there's a place for you in the Veilus community.
+## How It Works
 
-Let's build something transparent together.
+Every profile in Veilus gets three layers of isolation:
+
+1. **Unique fingerprint** — websites see a different device for each profile
+2. **Isolated storage** — cookies, localStorage, cache never leak between profiles
+3. **Independent proxy** — each profile routes through a separate IP address
+
+Open Profile A and Profile B side by side, and it's as if you're using two different computers on two different networks.
+
+## Pricing
+
+Veilus starts **free** — 5 browser profiles forever, no trial period, no credit card required. Just download and start managing your accounts.
+
+## Get Started
+
+Ready to stop worrying about bans?
+
+- 🌐 **Download**: [veilus.io](https://veilus.io)
+- 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
+- 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
+- 🐙 **GitHub**: [github.com/veilus](https://github.com/nicholasgriffintn/veilus)

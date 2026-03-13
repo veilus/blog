@@ -10,7 +10,7 @@ import { SITE_TITLE } from "../consts";
 	<head>
 		<BaseHead
 			title={`About — ${SITE_TITLE}`}
-			description="Learn about Veilus, the open-source anti-detect browser built on a custom Chromium engine."
+			description="Learn about Veilus, the free anti-detect browser built on native Chromium for managing multiple accounts on one computer."
 		/>
 		<style>
 			.about-content {
@@ -31,6 +31,23 @@ import { SITE_TITLE } from "../consts";
 			}
 			.about-content a {
 				color: var(--accent);
+			}
+			.about-content table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 1em 0;
+				font-size: 0.95em;
+			}
+			.about-content th,
+			.about-content td {
+				padding: 0.6em 0.8em;
+				border: 1px solid var(--border);
+				text-align: left;
+			}
+			.about-content th {
+				font-family: "Inter", sans-serif;
+				font-weight: 600;
+				background: var(--surface);
 			}
 			.community-links {
 				display: flex;
@@ -64,82 +81,120 @@ import { SITE_TITLE } from "../consts";
 
 				<h2>What is Veilus</h2>
 				<p>
-					Veilus is an open-source anti-detect browser built on
-					Chromium. Unlike existing solutions that rely on JavaScript
-					injection to mask browser fingerprints, Veilus modifies the
-					browser at the engine level — providing native fingerprint
-					management that's fundamentally harder to detect.
+					Veilus is a free anti-detect browser for managing multiple
+					accounts on one computer without getting detected or banned.
+					Built on a native Chromium engine (not Electron), Veilus
+					gives each browser profile a unique digital fingerprint —
+					making every account look like it's running on a completely
+					different device.
 				</p>
 
-				<h2>Why We Built It</h2>
+				<h2>Who It's For</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>User</th>
+							<th>Use Case</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong>Affiliate Marketers</strong></td>
+							<td>Run multiple ad accounts without linking</td>
+						</tr>
+						<tr>
+							<td><strong>E-commerce Sellers</strong></td>
+							<td>Manage storefronts on Amazon, Shopee, Lazada</td
+							>
+						</tr>
+						<tr>
+							<td><strong>Social Media Managers</strong></td>
+							<td>Operate multiple social accounts safely</td>
+						</tr>
+						<tr>
+							<td><strong>Web Scrapers</strong></td>
+							<td>Collect data without IP/fingerprint bans</td>
+						</tr>
+						<tr>
+							<td><strong>QA Engineers</strong></td>
+							<td>Test under different device configurations</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h2>Key Features</h2>
 				<p>
-					Existing anti-detect solutions are expensive, closed-source,
-					and use detectable JS injection techniques. We believe
-					privacy tools should be transparent, community-driven, and
-					built on solid engineering foundations. Veilus is our answer
-					to that.
+					<strong>Native Chromium engine</strong> — 3x faster page loads
+					and 80% less RAM per profile compared to Electron-based alternatives.
+					Real browser behavior with full Web API support.
+				</p>
+				<p>
+					<strong>Fingerprint engine</strong> — each profile gets a mathematically
+					consistent fingerprint covering Canvas, WebGL, AudioContext,
+					fonts, screen, navigator, and WebRTC.
+				</p>
+				<p>
+					<strong>VeilusFlow automation</strong> — record browser actions
+					visually (clicks, typing, navigation) and replay them across
+					profiles. No coding needed.
+				</p>
+				<p>
+					<strong>Free to start</strong> — 5 profiles forever, no trial
+					period, no credit card required.
 				</p>
 
-				<h2>Open Source ⭐</h2>
+				<h2>How It Works</h2>
 				<p>
-					Veilus is 100% open source. Every line of code is auditable.
-					No other anti-detect browser offers this level of
-					transparency. We believe trust must be earned through
-					verifiable code, not marketing promises.
-				</p>
-				<p>
-					Check out our code on <a
-						href="https://github.com/nicholasgriffintn/veilus"
-						target="_blank"
-						rel="noopener noreferrer">GitHub</a
-					>.
-				</p>
-
-				<h2>Contributing</h2>
-				<p>
-					We welcome contributors! Whether you're interested in C++
-					Chromium internals, fingerprint research, or web development
-					— there's a place for you. Check our <a
-						href="https://docs.veilus.io"
-						target="_blank"
-						rel="noopener noreferrer">development setup guide</a
-					>
-					and <a
-						href="https://github.com/nicholasgriffintn/veilus"
-						target="_blank"
-						rel="noopener noreferrer">GitHub repos</a
-					> to get started.
+					Each browser profile in Veilus gets three layers of
+					isolation: a unique fingerprint (so websites see a different
+					device), separate storage (cookies, cache, localStorage
+					never leak between profiles), and an independent proxy
+					connection (each profile gets its own IP). The result: every
+					profile looks like a different computer on a different
+					network.
 				</p>
 
 				<h2>Community</h2>
-				<p>Join the conversation and stay updated:</p>
+				<p>
+					Join the conversation, get support, and stay updated.
+					Contributors are welcome — check our
+					<a
+						href="https://github.com/nicholasgriffintn/veilus"
+						target="_blank"
+						rel="noopener noreferrer">GitHub</a
+					> to get involved.
+				</p>
 				<ul class="community-links">
 					<li>
 						<a
 							href="https://t.me/veilusbrowser"
 							target="_blank"
-							rel="noopener noreferrer">Telegram</a>
+							rel="noopener noreferrer">Telegram</a
+						>
 					</li>
 					<li>
 						<a
 							href="https://x.com/veilusbrowser"
 							target="_blank"
-							rel="noopener noreferrer">X (Twitter)</a>
+							rel="noopener noreferrer">X (Twitter)</a
+						>
 					</li>
 					<li>
 						<a
 							href="https://github.com/nicholasgriffintn/veilus"
 							target="_blank"
-							rel="noopener noreferrer">GitHub</a>
+							rel="noopener noreferrer">GitHub</a
+						>
 					</li>
 				</ul>
 
 				<h2>This Blog</h2>
 				<p>
-					This blog shares technical insights, product updates, and
-					guides for the Veilus community. We write about browser
-					fingerprinting, privacy engineering, Chromium internals, and
-					the journey of building an open-source anti-detect browser.
+					We write about multi-account management, browser
+					fingerprinting, automation workflows, and product updates.
+					Whether you're running ad accounts, managing storefronts, or
+					looking for the right anti-detect setup — we've got guides
+					for you.
 				</p>
 			</div>
 		</main>
