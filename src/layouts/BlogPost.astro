@@ -46,39 +46,36 @@ const jsonLd = {
 	},
 	inLanguage: lang === "vi" ? "vi-VN" : "en-US",
 };
+
+const hreflangLinks = translationSlug
+	? [
+			{ lang: lang === "en" ? "en" : "vi", href: canonicalURL.href },
+			{
+				lang: lang === "en" ? "vi" : "en",
+				href: new URL(`/blog/${translationSlug}/`, Astro.site).href,
+			},
+			{
+				lang: "x-default",
+				href:
+					lang === "en"
+						? canonicalURL.href
+						: new URL(`/blog/${translationSlug}/`, Astro.site).href,
+			},
+	  ]
+	: [];
 ---
 
 <html lang={lang}>
 	<head>
 		<BaseHead title={title} description={description} isPost={true} />
-	</head>{
-		typeof translationSlug === "string" && translationSlug.length > 0 && (
-			<>
-				<link
-					rel="alternate"
-					hreflang={lang === "en" ? "en" : "vi"}
-					href={canonicalURL.href}
-				/>
-				<link
-					rel="alternate"
-					hreflang={lang === "en" ? "vi" : "en"}
-					href={new URL(`/blog/${translationSlug}/`, Astro.site).href}
-				/>
-				<link
-					rel="alternate"
-					hreflang="x-default"
-					href={
-						lang === "en"
-							? canonicalURL.href
-							: new URL(`/blog/${translationSlug}/`, Astro.site)
-									.href
-					}
-				/>
-			</>
-		)
-	}
-	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)}
-	></script>
+		{
+			hreflangLinks.map((link) => (
+				<link rel="alternate" hreflang={link.lang} href={link.href} />
+			))
+		}
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)}
+		></script>
+	</head>
 
 	<style>
 		main {
