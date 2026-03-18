@@ -8,99 +8,162 @@ import Header from "../components/Header.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	lang = "en",
+	translationSlug,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: title,
+	description: description,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate || pubDate).toISOString(),
+	author: {
+		"@type": "Organization",
+		name: "Veilus",
+		url: "https://veilus.io",
+	},
+	publisher: {
+		"@type": "Organization",
+		name: "Veilus",
+		url: "https://veilus.io",
+		logo: {
+			"@type": "ImageObject",
+			url: "https://veilus.io/logo.svg",
+		},
+	},
+	mainEntityOfPage: {
+		"@type": "WebPage",
+		"@id": canonicalURL.toString(),
+	},
+	inLanguage: lang === "vi" ? "vi-VN" : "en-US",
+};
 ---
 
-<html lang="en">
+<html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-				border: 1px solid var(--border);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: var(--text-primary);
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-				color: var(--text-primary);
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: var(--text-secondary);
-				font-family: "Inter", sans-serif;
-				font-size: 0.9em;
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-			article :global(h2) {
-				margin-top: 2em;
-			}
-			article :global(h3) {
-				margin-top: 1.5em;
-			}
-		</style>
-	</head>
-
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{
-						heroImage && (
-							<Image
-								width={1020}
-								height={510}
-								src={heroImage}
-								alt=""
-							/>
-						)
+		<BaseHead title={title} description={description} isPost={true} />
+	</head>{
+		translationSlug && (
+			<>
+				<link
+					rel="alternate"
+					hreflang={lang === "en" ? "en" : "vi"}
+					href={canonicalURL.href}
+				/>
+				<link
+					rel="alternate"
+					hreflang={lang === "en" ? "vi" : "en"}
+					href={new URL(`/blog/${translationSlug}/`, Astro.site).href}
+				/>
+				<link
+					rel="alternate"
+					hreflang="x-default"
+					href={
+						lang === "en"
+							? canonicalURL.href
+							: new URL(`/blog/${translationSlug}/`, Astro.site)
+									.href
 					}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on{" "}
-										<FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
+				/>
+			</>
+		)
+	}
+	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)}
+	></script>
+	<style>
+		main {
+			width: calc(100% - 2em);
+			max-width: 100%;
+			margin: 0;
+		}
+		.hero-image {
+			width: 100%;
+		}
+		.hero-image img {
+			display: block;
+			margin: 0 auto;
+			border-radius: 12px;
+			box-shadow: var(--box-shadow);
+			border: 1px solid var(--border);
+		}
+		.prose {
+			width: 720px;
+			max-width: calc(100% - 2em);
+			margin: auto;
+			padding: 1em;
+			color: var(--text-primary);
+		}
+		.title {
+			margin-bottom: 1em;
+			padding: 1em 0;
+			text-align: center;
+			line-height: 1;
+		}
+		.title h1 {
+			margin: 0 0 0.5em 0;
+			color: var(--text-primary);
+		}
+		.date {
+			margin-bottom: 0.5em;
+			color: var(--text-secondary);
+			font-family: "Inter", sans-serif;
+			font-size: 0.9em;
+		}
+		.last-updated-on {
+			font-style: italic;
+		}
+		article :global(h2) {
+			margin-top: 2em;
+		}
+		article :global(h3) {
+			margin-top: 1.5em;
+		}
+	</style>
+
+
+	<Header />
+	<main>
+		<article>
+			<div class="hero-image">
+				{
+					heroImage && (
+						<Image
+							width={1020}
+							height={510}
+							src={heroImage}
+							alt={title}
+						/>
+					)
+				}
+			</div>
+			<div class="prose">
+				<div class="title">
+					<div class="date">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<div class="last-updated-on">
+									Last updated on{" "}
+									<FormattedDate date={updatedDate} />
+								</div>
+							)
+						}
 					</div>
-					<slot />
+					<h1>{title}</h1>
+					<hr />
 				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+				<slot />
+			</div>
+		</article>
+	</main>
+	<Footer />
 </html>

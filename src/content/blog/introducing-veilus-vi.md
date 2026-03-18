@@ -4,6 +4,7 @@ description: "Veilus là trình duyệt anti-detect miễn phí, chạy trên n�
 pubDate: "Mar 12 2026"
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: vi
+translationSlug: "introducing-veilus"
 tags:
   - announcement
   - product

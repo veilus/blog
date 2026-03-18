@@ -4,6 +4,7 @@ description: "Veilus is a free anti-detect browser built on native Chromium. Man
 pubDate: "Mar 12 2026"
 heroImage: '../../assets/blog-placeholder-3.jpg'
 lang: en
+translationSlug: "introducing-veilus-vi"
 tags:
   - announcement
   - product
