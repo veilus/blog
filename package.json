@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check:claims": "node scripts/check-claims.mjs dist",
     "preview": "astro preview",
     "astro": "astro"
   },
