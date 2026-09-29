@@ -74,4 +74,4 @@ Không muốn bị khóa tài khoản nữa?
 - 🌐 **Tải về**: [veilus.io](https://veilus.io)
 - 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
 - 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
-- 🐙 **GitHub**: [github.com/veilus](https://github.com/nicholasgriffintn/veilus)
+- 🐙 **GitHub**: [github.com/veilus](https://github.com/veilus)

@@ -81,4 +81,4 @@ Ready to stop worrying about bans?
 - 🌐 **Download**: [veilus.io](https://veilus.io)
 - 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
 - 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
-- 🐙 **GitHub**: [github.com/veilus](https://github.com/nicholasgriffintn/veilus)
+- 🐙 **GitHub**: [github.com/veilus](https://github.com/veilus)
