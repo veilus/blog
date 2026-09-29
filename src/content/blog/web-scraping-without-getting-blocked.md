@@ -18,26 +18,30 @@ Modern websites use multiple layers of protection. Understanding each layer help
 
 ### Layer 1: Rate Limiting
 
-The simplest defense. If you make 100 requests per second from one IP, you're obviously not human. Rate limits are typically:
+The simplest defense. If you make 100 requests per second from one IP, you're obviously not human. Limits vary from site to site and are rarely published. As a rough guide:
 
-- **Aggressive:** 30-60 requests/minute (Google, Amazon)
-- **Moderate:** 120-300 requests/minute (most e-commerce)
-- **Relaxed:** 600+ requests/minute (static content sites)
+- **Strict:** large platforms and search engines
+- **Moderate:** most e-commerce sites
+- **Relaxed:** static content sites
+
+Start slow, and back off as soon as you see "Too Many Requests" errors or CAPTCHAs.
 
 ### Layer 2: IP Reputation
 
-Anti-bot services maintain databases of "known bad" IPs. Datacenter IPs (AWS, GCP, DigitalOcean) are flagged immediately. Residential IPs are trusted by default.
+Anti-bot services keep reputation data on IP addresses. Datacenter IPs (AWS, GCP, DigitalOcean) are easy to recognize and often treated with suspicion, while residential IPs look like ordinary home connections and usually get more trust.
 
-| IP Type | Trust Level | Cost | Speed |
-|---------|-----------|------|-------|
-| Datacenter | ❌ Low | $2/month | Fast |
-| Residential | ✅ High | $5-15/GB | Variable |
-| Mobile | ✅ Very High | $15-30/GB | Slow |
-| ISP (Static Residential) | ✅ High | $3-8/IP/month | Fast |
+| IP Type | Trust Level | Speed |
+|---------|-----------|-------|
+| Datacenter | ❌ Low | Fast |
+| Residential | ✅ High | Variable |
+| Mobile | ✅ Very High | Slow |
+| ISP (Static Residential) | ✅ High | Fast |
+
+Datacenter IPs are usually the cheapest and mobile IPs the most expensive. Prices vary between providers and change often, so compare current plans.
 
 ### Layer 3: Browser Fingerprinting
 
-This is where most scrapers fail. Even with rotating IPs and realistic headers, websites can detect automation through:
+This is where many scrapers get caught. Even with rotating IPs and realistic headers, websites can detect automation through:
 
 - **Navigator properties** — Headless Chrome has telltale differences (`navigator.webdriver = true`)
 - **Canvas/WebGL rendering** — Identical fingerprints across requests = detected
@@ -47,7 +51,7 @@ This is where most scrapers fail. Even with rotating IPs and realistic headers, 
 
 ### Layer 4: Behavioral Analysis
 
-The most sophisticated layer. AI models analyze:
+The most sophisticated layer. Detection systems look at:
 
 - Click patterns (too regular = bot)
 - Page navigation flow (going directly to product pages without browsing = suspicious)
@@ -56,14 +60,7 @@ The most sophisticated layer. AI models analyze:
 
 ## The Anti-Bot Ecosystem
 
-| Service | Used By | Detection Level |
-|---------|---------|----------------|
-| **Cloudflare** | ~20% of websites | Medium-High |
-| **Akamai Bot Manager** | Enterprise sites | High |
-| **PerimeterX (HUMAN)** | E-commerce | Very High |
-| **DataDome** | Luxury/ticketing | Very High |
-| **reCAPTCHA v3** | Widespread | Medium |
-| **hCaptcha** | Privacy-focused sites | Medium |
+Services you are likely to run into include **Cloudflare**, **Akamai Bot Manager**, **PerimeterX (HUMAN)**, **DataDome**, **reCAPTCHA v3** and **hCaptcha**. How strict any of them is depends on the service and on how each site configures it, so test against the sites you actually target.
 
 ## Proven Techniques for Unblocked Scraping
 
@@ -89,7 +86,7 @@ const data = await page.content();
 
 ### 2. Rotate Fingerprints, Not Just IPs
 
-Most scrapers rotate proxies but use the same browser fingerprint for every request. This is like wearing the same unique outfit to every store while changing your car — the stores still recognize you.
+Many scrapers rotate proxies but use the same browser fingerprint for every request. This is like wearing the same unique outfit to every store while changing your car — the stores still recognize you.
 
 **Each scraping session needs:**
 - A unique canvas fingerprint
@@ -99,15 +96,11 @@ Most scrapers rotate proxies but use the same browser fingerprint for every requ
 
 This is exactly what anti-detect browsers like Veilus do — each profile gets a unique, internally consistent fingerprint.
 
-### 3. Residential Proxies are Non-Negotiable
+### 3. Use Residential Proxies on Protected Sites
 
-For any site with serious anti-bot protection, datacenter IPs are immediately flagged. You need residential proxies.
+On sites with serious anti-bot protection, datacenter IPs tend to be flagged quickly. Residential proxies are the safer choice there.
 
-**Recommended providers:**
-- **Bright Data** — Largest network, most reliable, expensive
-- **Smartproxy** — Good balance of quality and price
-- **IPRoyal** — Budget-friendly residential
-- **Oxylabs** — Enterprise-grade
+**Choosing a provider:** compare where their IPs are located, how they bill, whether they offer sticky sessions, and how they source their residential IPs.
 
 **Pro tip:** Use **sticky sessions** (same IP for the entire browsing session) rather than rotating on every request. Real users don't change IP every 30 seconds.
 
@@ -137,7 +130,7 @@ Key behaviors to simulate:
 
 Anti-bot systems track session behavior. A session that:
 - Has no cookies → suspicious (everyone has cookies)
-- Ignores Set-Cookie headers → definitely a bot
+- Ignores Set-Cookie headers → a strong bot signal
 - Never accesses CSS/JS resources → headless browser detection
 
 **Solution:** Use a real browser profile that maintains cookies, localStorage, and cache across sessions. Anti-detect browsers do this automatically.
@@ -172,7 +165,7 @@ Job Queue ──────────┼─── Profile 2 (Fingerprint B + 
 **Key principles:**
 - **Pool management** — Rotate profiles after N requests or M minutes
 - **Error handling** — If a profile gets CAPTCHAs, retire it and use a fresh one
-- **Rate limiting** — Self-impose limits (1-3 requests/minute per profile is safe for most sites)
+- **Rate limiting** — Self-impose conservative limits per profile, and slow down further when errors or CAPTCHAs appear
 - **Retry logic** — Exponential backoff on failures
 
 ## Tools We Recommend
@@ -181,9 +174,9 @@ Job Queue ──────────┼─── Profile 2 (Fingerprint B + 
 |------|----------|-------|
 | **Veilus** | Multi-profile management + automation | Free (5 profiles) |
 | **Playwright** | Browser automation scripting | Free |
-| **Bright Data** | Residential proxies | From $5/GB |
+| **A residential proxy provider** | Residential proxies | Paid |
 | **Scrapy** | Large-scale structured scraping | Free |
-| **2Captcha** | CAPTCHA solving (last resort) | From $2.99/1000 |
+| **A CAPTCHA-solving service** | CAPTCHA solving (last resort) | Paid |
 
 ## Common Mistakes
 
@@ -195,7 +188,7 @@ Job Queue ──────────┼─── Profile 2 (Fingerprint B + 
 
 ## Legal Considerations
 
-> **Disclaimer:** This guide is for educational purposes. Always check the website's Terms of Service and applicable laws in your jurisdiction. Scraping publicly available data is generally legal (see *hiQ v. LinkedIn*), but scraping behind login walls or ignoring explicit restrictions may not be.
+> **Disclaimer:** This guide is for educational purposes. Always check the website's Terms of Service and applicable laws in your jurisdiction. The rules differ between jurisdictions, and scraping behind login walls or ignoring explicit restrictions carries more legal risk than collecting publicly available data.
 
 ---
 
