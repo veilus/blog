@@ -1,5 +1,5 @@
 ---
-title: "Introducing Veilus: Manage Multiple Accounts Without Getting Banned"
+title: "Introducing Veilus: Manage Multiple Accounts on One Computer"
 description: "Veilus is a free anti-detect browser built on native Chromium. Manage multiple accounts on one computer with unique fingerprints, isolated profiles, and built-in automation."
 pubDate: "Mar 12 2026"
 heroImage: '../../assets/blog-placeholder-3.jpg'
@@ -36,35 +36,19 @@ The solution is an **anti-detect browser** — a tool that gives each browser pr
 
 Veilus is a **free anti-detect browser** built on a native Chromium engine. Here's what makes it different:
 
-### Native Chromium, Not Electron
+### Its Own Patched Chromium
 
-Most anti-detect browsers are built on Electron — a framework that bundles Chromium inside Node.js. So when you open a profile, you're running Chromium inside Chromium.
+Every profile runs in Veilus's own build of Chromium. The fingerprint is applied inside the browser's own C++ code, not injected into pages with JavaScript.
 
-Veilus compiles directly against the Chromium source code:
-
-| Metric | Veilus (Native) | Electron-based |
-|--------|----------------|----------------|
-| **RAM per profile** | ~100 MB | 300–500 MB |
-| **Page load speed** | 3x faster | Baseline |
-| **Detection risk** | No Electron artifacts | Detectable via Electron signatures |
-
-With 10 profiles open, that's **1 GB vs 3–5 GB of RAM**. If you run 50+ profiles, the difference is game-changing.
+The app around it — your profile list, fingerprint and proxy settings, automation — is a desktop app built with Tauri 2 and Rust. It runs on Windows 10/11 (x64) and macOS 13 or later (Apple Silicon).
 
 ### Fingerprint Engine
 
-Each profile gets a mathematically consistent fingerprint generated from a single seed value. Nothing is random — the values make sense together, the way a real device's fingerprint would:
+Each profile gets its own fingerprint, and its values are generated to fit together the way a real device's do: the operating system, screen, fonts, graphics card and browser version describe one plausible machine instead of a random mix.
 
-- **Canvas** — Unique 2D rendering via subtle pixel manipulation
-- **WebGL** — Spoofed GPU renderer and vendor strings
-- **AudioContext** — Modified audio processing signature
-- **Navigator** — Customized user agent, platform, hardware concurrency
-- **Fonts** — OS-appropriate font list
-- **Screen** — Resolution, color depth, device pixel ratio
-- **WebRTC** — Built-in IP leak protection
+### Veilus Flow Automation
 
-### VeilusFlow Automation
-
-Record browser actions visually — clicks, typing, scrolling, navigation — and Veilus auto-generates a replayable script. No coding required.
+Connect an AI assistant that supports MCP, such as Claude Code or Cursor, and describe the task. It writes a Playwright script, and Veilus runs it across your profiles. You can also write scripts yourself and add them through the local REST API.
 
 Use cases:
 - Auto-warm ad accounts
@@ -72,9 +56,9 @@ Use cases:
 - Scrape product data across storefronts
 - Run repetitive workflows across 50+ profiles
 
-### Team Collaboration
+### Veilus Sync
 
-Share browser profiles with your team. Each profile's cookies, storage, and fingerprint are synced so team members can pick up exactly where you left off.
+Keep profiles in step across your machines. Veilus Sync syncs them to a Git repository or Google Drive you choose — use a private one — so you can pick up on another computer where you left off.
 
 ## How It Works
 

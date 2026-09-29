@@ -1,6 +1,6 @@
 ---
-title: "Why We Built Veilus with Rust Instead of Electron"
-description: "The technical story behind choosing Tauri and Rust over Electron for an anti-detect browser — performance benchmarks, architecture decisions, and real-world impact."
+title: "Why We Built Veilus with Rust and Tauri"
+description: "The technical story behind building Veilus's desktop app with Tauri and Rust: how the app and the browser engine fit together, what Rust gives us, and what it costs."
 pubDate: "Mar 11 2026"
 heroImage: '../../assets/blog-placeholder-2.jpg'
 lang: en
@@ -11,108 +11,63 @@ tags:
   - engineering
 ---
 
-Every anti-detect browser on the market is built with Electron. We chose a different path — and the numbers show why.
+Veilus opens many browser profiles side by side, each with its own fingerprint and proxy. The desktop app that manages them is built with Tauri 2 and Rust. This post explains why we chose that stack, how the pieces fit together, and what it costs us.
 
-## The Problem with Electron
+## Two Halves: The App and the Engine
 
-Electron is a framework that bundles Chromium and Node.js together, letting developers build desktop apps with web technologies. It's how VS Code, Slack, Discord, and virtually every anti-detect browser is built.
+Veilus has two parts that are easy to mix up:
 
-For most apps, Electron is fine. For an anti-detect browser, it's a fundamental architectural mistake.
-
-Here's why: **an anti-detect browser's core job is to run Chromium instances.** Electron itself *is* a Chromium instance. So when you launch a profile in an Electron-based anti-detect browser, you're running Chromium inside Chromium.
-
-```
-[Electron Shell (Chromium + Node.js)]
-  └── [Anti-detect UI]
-       └── [Profile 1: Chromium instance]
-       └── [Profile 2: Chromium instance]
-       └── [Profile 3: Chromium instance]
-```
-
-Each layer adds overhead — memory, CPU, startup time.
-
-## Our Architecture: Tauri + Rust
-
-Veilus uses **Tauri**, a framework that replaces Electron's Chromium shell with the operating system's native webview (for the UI only), and uses **Rust** for all backend logic.
+- **The app** is what you install. It lists your profiles, edits their fingerprints and proxies, runs automation, and launches browsers. This is the part built with Tauri and Rust.
+- **The engine** is the browser each profile runs in: Veilus's own patched build of Chromium. The app downloads it separately and starts one browser per open profile.
 
 ```
-[Tauri Shell (Native webview — lightweight)]
-  └── [Rust Backend (memory-safe, compiled)]
-       └── [Profile 1: Patched Chromium]
-       └── [Profile 2: Patched Chromium]
-       └── [Profile 3: Patched Chromium]
+[Veilus app: Tauri 2]
+  ├── [Interface in the system webview]
+  └── [Rust core: profiles, fingerprints, proxies, automation]
+        ├── [Profile 1: Veilus's patched Chromium]
+        ├── [Profile 2: Veilus's patched Chromium]
+        └── [Profile 3: Veilus's patched Chromium]
 ```
 
-The UI shell is ~15MB instead of ~150MB. The Rust backend handles profile management, fingerprint generation, proxy routing, and automation scheduling — all compiled to native machine code.
+The engine is Chromium because websites expect a real Chrome-family browser. The app around it had no such constraint, so we could choose the stack we trusted most to stay correct.
 
-## The Numbers
+## Why Tauri
 
-We benchmarked Veilus against two popular Electron-based anti-detect browsers on identical hardware (MacBook Pro M2, 16GB RAM):
+Tauri lets us write the interface with ordinary web technology and put everything else in Rust. The interface runs in the webview the operating system already provides — WebView2 on Windows, WKWebView on macOS — so the app does not carry a second browser just to draw its own windows.
 
-### Application Startup
+That split suits Veilus:
 
-| Metric | Veilus (Tauri) | Competitor A (Electron) | Competitor B (Electron) |
-|--------|---------------|------------------------|------------------------|
-| Cold start | 1.5s | 4.2s | 3.8s |
-| App bundle size | 28MB | 210MB | 185MB |
-| Idle RAM (no profiles) | 45MB | 180MB | 160MB |
+- **The app and the engine ship separately.** The installer does not include the browser engine; the app downloads Veilus's patched Chromium itself, so the two can be updated on their own schedules.
+- **The state lives in Rust.** Profiles, schedules and scripts are kept by the Rust core, and the interface reads and changes them through it.
+- **One core behind every entry point.** The local REST API and the MCP server (`veilus mcp`) ship in the same Rust program as the interface and call into the same core, so your AI assistant works with the same profiles you see in the app.
 
-### Per-Profile Resource Usage
+## Why Rust
 
-| Profiles Open | Veilus RAM | Electron RAM | Delta |
-|---------------|-----------|-------------|-------|
-| 1 | 165MB | 380MB | -57% |
-| 5 | 520MB | 1.4GB | -63% |
-| 10 | 1.0GB | 2.8GB | -64% |
-| 20 | 1.9GB | 5.2GB | -63% |
-| 50 | 4.5GB | OOM* | — |
+### Memory Safety Without a Garbage Collector
 
-*\*Out of Memory on 16GB system — Electron-based browsers couldn't maintain 50 simultaneous profiles.*
+In safe Rust, the compiler rules out use-after-free bugs and data races before the code ever runs, and it does so without a garbage collector. Veilus handles sensitive data — cookies, credentials, fingerprints — so a whole class of memory bugs that cannot reach users is a security property, not just a technical detail.
 
-### Why This Matters
+### Concurrency the Compiler Checks
 
-- **More profiles on the same hardware.** If you manage 50+ accounts, you'd need 32GB+ RAM with Electron browsers. With Veilus, 16GB is enough.
-- **Faster profile switching.** Less memory pressure means less swapping, which means faster everything.
-- **Lower electricity costs.** Sounds trivial, but if you run profiles 24/7 for automation, CPU efficiency adds up.
+Veilus does many things at once: it launches browsers, watches their processes and runs scheduled scripts across profiles. Rust's type system refuses to compile code that shares data between threads unsafely. It does not prevent every concurrency bug — deadlocks and logic races are still ours to avoid — but in safe Rust a data race is a compile error, not a crash report.
 
-## Beyond Performance: Why Rust?
+### SQLite, Directly
 
-Performance was the initial motivation. But Rust gave us other advantages we didn't fully appreciate until later:
-
-### Memory Safety Without Garbage Collection
-
-Rust's ownership model prevents memory leaks, use-after-free bugs, and data races at compile time. For a browser tool that manages sensitive data (cookies, credentials, fingerprints), this is a security feature, not just a technical detail.
-
-### Fearless Concurrency
-
-Veilus runs automation scripts across multiple profiles simultaneously. Rust's type system guarantees thread safety at compile time — no race conditions, no deadlocks, no "it works on my machine" surprises.
-
-### SQLite Integration
-
-Profile data in Veilus is stored in a local SQLite database. Rust's `rusqlite` crate gives us direct, zero-overhead access to SQLite — no ORM abstraction layers, no connection pooling complexity. Queries that touch fingerprint data average **<1ms**.
-
-### Binary Size
-
-The entire Veilus Rust backend compiles to a single binary under 15MB. Combined with the Tauri shell, the total app download is 28MB. Compare this to 200MB+ for Electron apps.
+Profiles, schedules and scripts are stored in a local SQLite database on your machine. The `rusqlite` crate gives the Rust core direct access to it, with no ORM layer in between.
 
 ## The Trade-offs
 
 Being honest about the downsides:
 
-1. **Smaller ecosystem.** Front-end libraries often target Electron first. We had to build more things from scratch.
-2. **Steeper learning curve.** Finding Rust developers is harder (and more expensive) than finding JavaScript developers.
-3. **Slower iteration speed.** Rust's compiler is strict. Changes that take 5 minutes in JavaScript can take 30 minutes in Rust. But the bugs those 30 minutes catch would have taken hours to debug in production.
-4. **Platform-specific challenges.** Tauri relies on native webviews for the UI, which occasionally behave differently across operating systems. We test on Windows, macOS, and Linux to catch these.
+1. **Fewer ready-made parts.** Tauri's ecosystem is still young, so we write more pieces ourselves.
+2. **Steeper learning curve.** Rust asks more of whoever writes it, and experienced Rust developers are harder to find.
+3. **Slower iteration.** The compiler is strict, so a change that would be quick in JavaScript can take noticeably longer to get past it. In return, many of the bugs it stops would otherwise have shown up in production.
+4. **Two webviews to test.** Tauri draws the interface with the operating system's webview, and those behave slightly differently from one system to the next. Veilus ships for Windows and macOS, so the interface has to hold up in both.
 
 ## Was It Worth It?
 
-Absolutely. Our users report:
-- Running 3-5x more profiles on the same hardware
-- Noticeably faster app startup and profile switching
-- Zero memory-related crashes (a common complaint with Electron anti-detect browsers)
-
-The anti-detect browser market has been stuck on Electron since 2015. We believe Rust + Tauri is the foundation for the next generation of browser tools — and Veilus is proving it.
+For us, yes. The compiler checks what we would otherwise have to remember, the interface stays ordinary web code, and the browser your profiles run in is still Chromium — patched by us, because that is what websites expect. We'll keep writing about what we learn as Veilus grows.
 
 ---
 
-*Experience the difference. [Download Veilus free](https://veilus.io/download) — built with Rust, run with confidence.*
+*Want to see it for yourself? [Download Veilus free](https://veilus.io/download) — built with Rust, run with confidence.*

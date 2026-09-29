@@ -74,7 +74,7 @@ The single most impactful change you can make. Tools like `requests` (Python) or
 **Instead, use:**
 - **Playwright** — Microsoft's browser automation library
 - **Puppeteer** — Google's Chrome automation
-- **Veilus + VeilusFlow** — Record your scraping workflow visually, export to Playwright
+- **Veilus + Veilus Flow** — Playwright scripts written by your AI assistant over MCP, run across profiles with their own fingerprints
 
 ```javascript
 // Bad: HTTP library (easily detected)
@@ -199,4 +199,4 @@ Job Queue ──────────┼─── Profile 2 (Fingerprint B + 
 
 ---
 
-*Need to manage multiple scraping profiles? [Try Veilus free](https://veilus.io/download) — 5 profiles with unique fingerprints, built-in automation, no credit card.*
+*Need to manage multiple scraping profiles? [Try Veilus free](https://veilus.io/download) — 5 profiles with unique fingerprints, no credit card.*

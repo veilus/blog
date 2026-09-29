@@ -82,11 +82,10 @@ import { SITE_TITLE } from "../consts";
 				<h2>What is Veilus</h2>
 				<p>
 					Veilus is a free anti-detect browser for managing multiple
-					accounts on one computer without getting detected or banned.
-					Built on a native Chromium engine (not Electron), Veilus
-					gives each browser profile a unique digital fingerprint —
-					making every account look like it's running on a completely
-					different device.
+					accounts on one computer. Built on its own patched Chromium
+					engine, Veilus gives each browser profile a unique digital
+					fingerprint and its own proxy — making every account look
+					like it's running on a completely different device.
 				</p>
 
 				<h2>Who It's For</h2>
@@ -124,19 +123,20 @@ import { SITE_TITLE } from "../consts";
 
 				<h2>Key Features</h2>
 				<p>
-					<strong>Native Chromium engine</strong> — 3x faster page loads
-					and 80% less RAM per profile compared to Electron-based alternatives.
-					Real browser behavior with full Web API support.
+					<strong>Patched Chromium engine</strong> — every profile runs
+					in Veilus's own build of Chromium, with the fingerprint applied
+					in the browser's own code rather than injected with JavaScript. Real
+					browser behavior with full Web API support.
 				</p>
 				<p>
-					<strong>Fingerprint engine</strong> — each profile gets a mathematically
-					consistent fingerprint covering Canvas, WebGL, AudioContext,
-					fonts, screen, navigator, and WebRTC.
+					<strong>Fingerprint engine</strong> — each profile gets its own
+					fingerprint, with values that fit together the way a real
+					device's do.
 				</p>
 				<p>
-					<strong>VeilusFlow automation</strong> — record browser actions
-					visually (clicks, typing, navigation) and replay them across
-					profiles. No coding needed.
+					<strong>Veilus Flow automation</strong> — your AI assistant
+					writes scripts over MCP, or you write them yourself, and Veilus
+					runs them across profiles.
 				</p>
 				<p>
 					<strong>Free to start</strong> — 5 profiles forever, no trial

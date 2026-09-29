@@ -1,6 +1,6 @@
 ---
-title: "Giới thiệu Veilus: Quản lý nhiều tài khoản mà không bị khóa"
-description: "Veilus là trình duyệt anti-detect miễn phí, chạy trên nền Chromium gốc. Quản lý nhiều tài khoản trên một máy mà không bị phát hiện hay khóa."
+title: "Giới thiệu Veilus: Quản lý nhiều tài khoản trên một máy"
+description: "Veilus là trình duyệt anti-detect miễn phí, chạy trên bản Chromium do Veilus tự vá. Quản lý nhiều tài khoản trên một máy, mỗi profile một fingerprint và proxy riêng."
 pubDate: "Mar 12 2026"
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: vi
@@ -30,34 +30,28 @@ Nếu bạn gặp những vấn đề trên, Veilus sinh ra là để giải quy
 
 ## Veilus là gì?
 
-Veilus là **trình duyệt anti-detect miễn phí**, chạy trên nền Chromium gốc — không phải Electron. Mỗi profile trình duyệt có một fingerprint riêng biệt, nên mỗi tài khoản trông như đang chạy trên một máy tính khác.
+Veilus là **trình duyệt anti-detect miễn phí**. Mỗi profile trình duyệt có một fingerprint riêng biệt, nên mỗi tài khoản trông như đang chạy trên một máy tính khác.
 
-## Khác gì GoLogin, Multilogin?
+## Chromium do Veilus tự vá
 
-Hầu hết trình duyệt anti-detect dùng Electron — tức là chạy Chromium bên trong Chromium. Veilus biên dịch trực tiếp từ mã nguồn Chromium:
+Mỗi profile chạy trên bản Chromium do Veilus tự vá. Fingerprint được áp ngay trong mã C++ của trình duyệt, không phải chèn JavaScript vào trang.
 
-| Chỉ số | Veilus (Chromium gốc) | Trình duyệt dùng Electron |
-|--------|-----------------------|---------------------------|
-| **RAM mỗi profile** | ~100 MB | 300–500 MB |
-| **Tốc độ tải trang** | Nhanh gấp 3x | Bình thường |
-| **Rủi ro phát hiện** | Không có dấu vết Electron | Phát hiện được qua Electron |
-
-Mở 10 profile cùng lúc: **1 GB vs 3–5 GB RAM**. Chạy 50 profile thì khác biệt càng rõ.
+Ứng dụng quản lý bên ngoài — danh sách profile, cấu hình fingerprint và proxy, tự động hóa — là app desktop viết bằng Tauri 2 và Rust, chạy trên Windows 10/11 (x64) và macOS 13 trở lên (Apple Silicon).
 
 ## Tính năng chính
 
 ### Fingerprint Engine
-Mỗi profile có fingerprint nhất quán, được tạo từ một seed duy nhất — Canvas, WebGL, AudioContext, fonts, screen, WebRTC. Tất cả đều liên kết logic như thiết bị thật.
+Mỗi profile có fingerprint riêng, các giá trị được sinh sao cho khớp nhau như một thiết bị thật: hệ điều hành, màn hình, font chữ, card đồ họa và phiên bản trình duyệt cùng mô tả một chiếc máy hợp lý, không phải một mớ giá trị ngẫu nhiên.
 
-### VeilusFlow — Tự động hóa
-Ghi lại thao tác trình duyệt (click, gõ, lướt) rồi phát lại trên nhiều profile. Không cần code. Phù hợp để:
+### Veilus Flow — Tự động hóa
+Kết nối một trợ lý AI có hỗ trợ MCP, như Claude Code hay Cursor, rồi giao việc: nó viết script Playwright, Veilus chạy script đó trên nhiều profile. Bạn cũng có thể tự viết script rồi đưa vào qua REST API cục bộ. Phù hợp để:
 - Warm tài khoản quảng cáo tự động
 - Đăng bài hàng loạt
 - Thu thập dữ liệu sản phẩm
 - Chạy workflow lặp lại trên 50+ profile
 
-### Chia sẻ nhóm
-Chia sẻ profile cho team — cookies, storage, fingerprint đều được đồng bộ. Người khác đăng nhập vào là làm việc tiếp được ngay.
+### Veilus Sync
+Đồng bộ profile giữa các máy của bạn qua Git repository hoặc Google Drive do bạn chọn — nên dùng loại riêng tư. Sang máy khác là làm việc tiếp được ngay.
 
 ## Hoạt động thế nào?
 

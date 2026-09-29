@@ -80,20 +80,10 @@ Cookies, localStorage, IndexedDB, and cache are completely separated between pro
 |---------|---------------|
 | **Real browser engine** | Chromium-based is best; avoid browsers that emulate APIs |
 | **Fingerprint quality** | Test with [creepjs.com](https://creepjs.com) and [iphey.com](https://iphey.com) |
-| **Performance** | Electron-based browsers use 2-3x more RAM than native solutions |
+| **Performance** | Every profile is a full browser; check how many your machine can run at once |
 | **Automation support** | Built-in automation saves time if you manage many accounts |
-| **Profile sync** | Encrypted sync between devices is essential for teams |
+| **Profile sync** | Matters once you work from more than one machine; check where the synced data is stored |
 | **Pricing** | Free tiers with real profiles (not just trials) show confidence in the product |
-
-## Anti-Detect Browser Comparison (2026)
-
-| Browser | Engine | Automation | Free Profiles | Starting Price |
-|---------|--------|-----------|---------------|---------------|
-| **Veilus** | Chromium (Tauri/Rust) | Built-in (VeilusFlow) | 5 forever | Free |
-| Multilogin | Chromium/Firefox | Separate tool | Trial only | $99/mo |
-| GoLogin | Chromium | Limited | Trial only | $49/mo |
-| AdsPower | Chromium | Basic RPA | 2 | $9/mo |
-| Dolphin{anty} | Chromium | API only | 10 | $89/mo |
 
 ## Getting Started
 
