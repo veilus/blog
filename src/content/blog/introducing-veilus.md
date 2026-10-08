@@ -2,6 +2,7 @@
 title: "Introducing Veilus: Manage Multiple Accounts on One Computer"
 description: "Veilus is an anti-detect browser built on its own patched Chromium, free for 5 profiles. Keep many accounts apart on one computer, each with its own fingerprint, storage and proxy."
 pubDate: "Mar 12 2026"
+updatedDate: "Oct 8 2026"
 heroImage: '../../assets/blog-placeholder-3.jpg'
 lang: en
 translationSlug: "introducing-veilus-vi"
@@ -38,17 +39,17 @@ Veilus is an **anti-detect browser** built on a native Chromium engine, free for
 
 ### Its Own Patched Chromium
 
-Every profile runs in Veilus's own build of Chromium. The fingerprint is applied inside the browser's own C++ code, not injected into pages with JavaScript.
+Every profile runs in [Veilus's own build of Chromium](https://docs.veilus.io/engine/chromium/). The fingerprint is applied inside the browser's own C++ code, not injected into pages with JavaScript.
 
 The app around it — your profile list, fingerprint and proxy settings, automation — is a desktop app built with Tauri 2 and Rust. It runs on Windows 10/11 (x64) and macOS 13 or later (Apple Silicon).
 
 ### Fingerprint Engine
 
-Each profile gets its own fingerprint, and its values are generated to fit together the way a real device's do: the operating system, screen, fonts, graphics card and browser version describe one plausible machine instead of a random mix.
+Each profile gets [its own fingerprint](https://docs.veilus.io/profiles/fingerprinting/), and its values are generated to fit together the way a real device's do: the operating system, screen, fonts, graphics card and browser version describe one plausible machine instead of a random mix.
 
 ### Veilus Flow Automation
 
-Connect an AI assistant that supports MCP, such as Claude Code or Cursor, and describe the task. It writes a Playwright script, and Veilus runs it across your profiles. You can also write scripts yourself and add them through the local REST API.
+Connect an AI assistant that supports MCP, such as Claude Code or Cursor, and describe the task ([how the MCP server works](https://veilus.io/features/mcp/)). It writes a Playwright script, and Veilus runs it across your profiles. You can also write scripts yourself and add them through the [local REST API](https://docs.veilus.io/reference/rest-api/).
 
 Use cases:
 - Pull daily reports from every client dashboard
@@ -58,7 +59,7 @@ Use cases:
 
 ### Veilus Sync
 
-Keep profiles in step across your machines. Veilus Sync syncs them to a Git repository or Google Drive you choose — use a private one — so you can pick up on another computer where you left off.
+Keep profiles in step across your machines. [Veilus Sync](https://docs.veilus.io/sync/overview/) syncs them to a Git repository or Google Drive you choose — use a private one — so you can pick up on another computer where you left off.
 
 ## How It Works
 
@@ -72,7 +73,7 @@ Open Profile A and Profile B side by side, and it's as if you're using two diffe
 
 ## Pricing
 
-Veilus starts **free** — 5 browser profiles forever, no trial period, no credit card required. Just download and start managing your accounts.
+Veilus starts **free** — 5 browser profiles forever, no trial period, no credit card required. Just download and start managing your accounts. Paid plans are on the [pricing page](https://veilus.io/pricing/).
 
 ## Get Started
 

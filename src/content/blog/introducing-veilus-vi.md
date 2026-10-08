@@ -2,6 +2,7 @@
 title: "Giới thiệu Veilus: Quản lý nhiều tài khoản trên một máy"
 description: "Veilus là trình duyệt antidetect, miễn phí 5 hồ sơ, chạy trên bản Chromium do Veilus tự vá. Quản lý nhiều tài khoản trên một máy, mỗi profile một fingerprint và proxy riêng."
 pubDate: "Mar 12 2026"
+updatedDate: "Oct 8 2026"
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: vi
 translationSlug: "introducing-veilus"
@@ -34,17 +35,17 @@ Veilus là **trình duyệt antidetect**, miễn phí 5 hồ sơ. Mỗi profile 
 
 ## Chromium do Veilus tự vá
 
-Mỗi profile chạy trên bản Chromium do Veilus tự vá. Fingerprint được áp ngay trong mã C++ của trình duyệt, không phải chèn JavaScript vào trang.
+Mỗi profile chạy trên [bản Chromium do Veilus tự vá](https://docs.veilus.io/engine/chromium/). Fingerprint được áp ngay trong mã C++ của trình duyệt, không phải chèn JavaScript vào trang.
 
 Ứng dụng quản lý bên ngoài — danh sách profile, cấu hình fingerprint và proxy, tự động hóa — là app desktop viết bằng Tauri 2 và Rust, chạy trên Windows 10/11 (x64) và macOS 13 trở lên (Apple Silicon).
 
 ## Tính năng chính
 
 ### Fingerprint Engine
-Mỗi profile có fingerprint riêng, các giá trị được sinh sao cho khớp nhau như một thiết bị thật: hệ điều hành, màn hình, font chữ, card đồ họa và phiên bản trình duyệt cùng mô tả một chiếc máy hợp lý, không phải một mớ giá trị ngẫu nhiên.
+Mỗi profile có [fingerprint riêng](https://docs.veilus.io/vi/profiles/fingerprinting/), các giá trị được sinh sao cho khớp nhau như một thiết bị thật: hệ điều hành, màn hình, font chữ, card đồ họa và phiên bản trình duyệt cùng mô tả một chiếc máy hợp lý, không phải một mớ giá trị ngẫu nhiên.
 
 ### Veilus Flow — Tự động hóa
-Kết nối một trợ lý AI có hỗ trợ MCP, như Claude Code hay Cursor, rồi giao việc: nó viết script Playwright, Veilus chạy script đó trên nhiều profile. Bạn cũng có thể tự viết script rồi đưa vào qua REST API cục bộ. Phù hợp để:
+Kết nối một trợ lý AI có hỗ trợ MCP, như Claude Code hay Cursor, rồi giao việc ([MCP server hoạt động thế nào](https://veilus.io/vi/features/mcp/)): nó viết script Playwright, Veilus chạy script đó trên nhiều profile. Bạn cũng có thể tự viết script rồi đưa vào qua [REST API cục bộ](https://docs.veilus.io/vi/reference/rest-api/). Phù hợp để:
 - Lấy báo cáo hằng ngày từ dashboard của từng khách
 - Kiểm tra giá và gian hàng trên các shop
 - Thu thập dữ liệu sản phẩm
@@ -65,7 +66,7 @@ Mở Profile A và Profile B cạnh nhau — như đang dùng hai máy tính kh�
 
 ## Free không?
 
-**Free.** 5 profile vĩnh viễn, không giới hạn thời gian, không cần thẻ tín dụng. Tải về là dùng được luôn.
+**Free.** 5 profile vĩnh viễn, không giới hạn thời gian, không cần thẻ tín dụng. Tải về là dùng được luôn. Các gói trả phí xem ở [trang giá](https://veilus.io/vi/pricing/).
 
 ## Bắt đầu
 

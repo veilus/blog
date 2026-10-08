@@ -2,6 +2,7 @@
 title: "Why We Built Veilus with Rust and Tauri"
 description: "The technical story behind building Veilus's desktop app with Tauri and Rust: how the app and the browser engine fit together, what Rust gives us, and what it costs."
 pubDate: "Mar 11 2026"
+updatedDate: "Oct 8 2026"
 heroImage: '../../assets/blog-placeholder-2.jpg'
 lang: en
 tags:
@@ -17,8 +18,8 @@ Veilus opens many browser profiles side by side, each with its own fingerprint a
 
 Veilus has two parts that are easy to mix up:
 
-- **The app** is what you install. It lists your profiles, edits their fingerprints and proxies, runs automation, and launches browsers. This is the part built with Tauri and Rust.
-- **The engine** is the browser each profile runs in: Veilus's own patched build of Chromium. The app downloads it separately and starts one browser per open profile.
+- **The app** is what you install. It lists your profiles, edits their [fingerprints](https://docs.veilus.io/profiles/fingerprinting/) and proxies, runs [automation](https://docs.veilus.io/automation/overview/), and launches browsers. This is the part built with Tauri and Rust.
+- **The engine** is the browser each profile runs in: [Veilus's own patched build of Chromium](https://docs.veilus.io/engine/chromium/). The app [downloads it separately](https://docs.veilus.io/getting-started/installation/) and starts one browser per open profile.
 
 ```
 [Veilus app: Tauri 2]

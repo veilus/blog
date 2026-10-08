@@ -3,6 +3,19 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
+import { readdirSync, readFileSync } from 'node:fs';
+
+// lastmod của /blog/<slug>/ lấy từ frontmatter (updatedDate, không có thì pubDate); trang khác không có lastmod.
+// Trước đây mọi URL mang new Date() của lượt build — lastmod luôn bằng giờ build thì Google bỏ qua (VEIL-1318).
+const frontmatterDate = (src, key) => src.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1];
+const postDates = Object.fromEntries(
+	readdirSync('src/content/blog')
+		.filter((f) => /\.mdx?$/.test(f))
+		.map((f) => {
+			const src = readFileSync(`src/content/blog/${f}`, 'utf8');
+			return [f.replace(/\.mdx?$/, ''), new Date(frontmatterDate(src, 'updatedDate') ?? frontmatterDate(src, 'pubDate'))];
+		}),
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,9 +29,9 @@ export default defineConfig({
 		mdx(),
 		sitemap({
 			serialize(item) {
-				// Add lastmod for crawl priority
-				item.lastmod = new Date().toISOString();
-				return item;
+				const slug = new URL(item.url).pathname.match(/^\/blog\/([^/]+)\/?$/)?.[1];
+				const date = slug && postDates[slug];
+				return date && !Number.isNaN(date.getTime()) ? { ...item, lastmod: date.toISOString() } : item;
 			},
 		}),
 	],

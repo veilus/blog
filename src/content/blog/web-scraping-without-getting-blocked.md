@@ -2,6 +2,7 @@
 title: "Web Scraping Without Getting Blocked: A Complete Guide (2026)"
 description: "Learn how to scrape websites without getting blocked — covering anti-bot systems, fingerprint rotation, residential proxies, human behavior simulation, and scaling strategies."
 pubDate: "Mar 08 2026"
+updatedDate: "Oct 8 2026"
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: en
 tags:
@@ -94,7 +95,7 @@ Many scrapers rotate proxies but use the same browser fingerprint for every requ
 - Consistent navigator properties (don't mix Windows UA with Mac fonts)
 - Realistic screen resolution for the supposed device
 
-This is exactly what anti-detect browsers like Veilus do — each profile gets a unique, internally consistent fingerprint.
+This is exactly what anti-detect browsers like Veilus do — each profile gets a unique, [internally consistent fingerprint](https://docs.veilus.io/profiles/fingerprinting/).
 
 ### 3. Use Residential Proxies on Protected Sites
 
@@ -102,7 +103,7 @@ On sites with serious anti-bot protection, datacenter IPs tend to be flagged qui
 
 **Choosing a provider:** compare where their IPs are located, how they bill, whether they offer sticky sessions, and how they source their residential IPs.
 
-**Pro tip:** Use **sticky sessions** (same IP for the entire browsing session) rather than rotating on every request. Real users don't change IP every 30 seconds.
+**Pro tip:** Use **sticky sessions** (same IP for the entire browsing session) rather than rotating on every request. Real users don't change IP every 30 seconds. In Veilus, a [rotating proxy pool](https://docs.veilus.io/profiles/proxy/) has a per-pool session type for exactly this.
 
 ### 4. Mimic Human Behavior
 
@@ -172,8 +173,8 @@ Job Queue ──────────┼─── Profile 2 (Fingerprint B + 
 
 | Tool | Use Case | Price |
 |------|----------|-------|
-| **Veilus** | Multi-profile management + automation | Free (5 profiles) |
-| **Playwright** | Browser automation scripting | Free |
+| **Veilus** | Multi-profile management + automation ([scraping recipe](https://docs.veilus.io/recipes/web-scraping/)) | [Free (5 profiles)](https://veilus.io/pricing/) |
+| **Playwright** | Browser automation scripting; Veilus runs Playwright scripts across profiles ([Veilus Flow](https://docs.veilus.io/automation/overview/)) | Free |
 | **A residential proxy provider** | Residential proxies | Paid |
 | **Scrapy** | Large-scale structured scraping | Free |
 | **A CAPTCHA-solving service** | CAPTCHA solving (last resort) | Paid |
