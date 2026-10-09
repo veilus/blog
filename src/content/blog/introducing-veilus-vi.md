@@ -3,7 +3,7 @@ title: "Giới thiệu Veilus: Giờ đầu tiên, từ cài đặt tới script
 description: "Đi qua phiên làm việc đầu tiên với Veilus: cài app, tải engine, tạo hồ sơ có proxy, kết nối trợ lý AI qua MCP, duyệt script nó viết và đặt lịch chạy."
 pubDate: "Mar 12 2026"
 updatedDate: "Oct 9 2026"
-heroImage: '../../assets/blog-placeholder-5.jpg'
+heroImage: '../../assets/hero-profiles.jpg'
 lang: vi
 translationSlug: "introducing-veilus"
 tags:

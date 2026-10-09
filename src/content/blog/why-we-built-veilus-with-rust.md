@@ -3,7 +3,7 @@ title: "Why We Built Veilus with Rust and Tauri"
 description: "The technical story behind building Veilus's desktop app with Tauri and Rust: how the app and the browser engine fit together, what Rust gives us, and what it costs."
 pubDate: "Mar 11 2026"
 updatedDate: "Oct 8 2026"
-heroImage: '../../assets/blog-placeholder-2.jpg'
+heroImage: '../../assets/hero-engine.jpg'
 lang: en
 tags:
   - rust

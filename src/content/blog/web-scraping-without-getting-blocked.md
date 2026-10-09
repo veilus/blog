@@ -3,7 +3,7 @@ title: "Web Scraping Without Getting Blocked: A Complete Guide (2026)"
 description: "Learn how to scrape websites without getting blocked — covering anti-bot systems, fingerprint rotation, residential proxies, human behavior simulation, and scaling strategies."
 pubDate: "Mar 08 2026"
 updatedDate: "Oct 8 2026"
-heroImage: '../../assets/blog-placeholder-5.jpg'
+heroImage: '../../assets/hero-flow-approve.jpg'
 lang: en
 tags:
   - scraping

@@ -3,7 +3,7 @@ title: "Introducing Veilus: Your First Hour, From Install to a Scheduled Script"
 description: "A walkthrough of a first session with Veilus: install it, download the engine, set up a profile with a proxy, connect an AI assistant over MCP, approve its script and put it on a schedule."
 pubDate: "Mar 12 2026"
 updatedDate: "Oct 9 2026"
-heroImage: '../../assets/blog-placeholder-3.jpg'
+heroImage: '../../assets/hero-profiles.jpg'
 lang: en
 translationSlug: "introducing-veilus-vi"
 tags:
