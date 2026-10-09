@@ -67,7 +67,7 @@ const hreflangLinks = translationSlug
 
 <html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} isPost={true} />
+		<BaseHead title={title} description={description} image={heroImage} isPost={true} />
 		{
 			hreflangLinks.map((link) => (
 				<link rel="alternate" hreflang={link.lang} href={link.href} />
