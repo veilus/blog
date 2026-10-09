@@ -1,85 +1,67 @@
 ---
-title: "Introducing Veilus: Manage Multiple Accounts on One Computer"
-description: "Veilus is an anti-detect browser built on its own patched Chromium, free for 5 profiles. Keep many accounts apart on one computer, each with its own fingerprint, storage and proxy."
+title: "Introducing Veilus: Your First Hour, From Install to a Scheduled Script"
+description: "A walkthrough of a first session with Veilus: install it, download the engine, set up a profile with a proxy, connect an AI assistant over MCP, approve its script and put it on a schedule."
 pubDate: "Mar 12 2026"
-updatedDate: "Oct 8 2026"
+updatedDate: "Oct 9 2026"
 heroImage: '../../assets/blog-placeholder-3.jpg'
 lang: en
 translationSlug: "introducing-veilus-vi"
 tags:
   - announcement
   - product
+  - tutorial
 ---
 
-If you run accounts for several clients, stores or brands from one computer, you know the friction: logging in and out all day, sessions leaking from one account into another, and one browser that mixes everything together.
+The [homepage](https://veilus.io/) says what Veilus is. This post shows what using it looks like: one sitting, from a fresh install to a script that runs on its own every morning. Each step links to the docs page with the full details.
 
-You clear cookies. Use incognito mode. Maybe try a VPN. The accounts still share one browser identity.
+## 1. Install, then download the engine
 
-That's because modern platforms don't just track your IP address. They track your **browser fingerprint** — a unique combination of your screen resolution, installed fonts, WebGL renderer, canvas hash, and dozens of other signals that make your browser as identifiable as a physical fingerprint.
+Veilus runs on Windows 10 or 11 (x64) and on macOS 13 or later on Apple Silicon. Get the installer from the [download page](https://veilus.io/download/). Neither Windows nor macOS recognises the publisher on first launch, so you click through one warning: **More info → Run anyway** on Windows, **Open Anyway** in Privacy & Security on macOS. The [installation guide](https://docs.veilus.io/getting-started/installation/) has the exact steps.
 
-**No amount of cookie clearing or VPN switching changes your browser fingerprint.**
+The installer does not include the browser itself. Open **Settings → Engine & updates** and click **Download** next to the version marked **Latest**. That is Veilus's own build of Chromium, and every profile runs on it. The first engine you download becomes active automatically. [More about the engine](https://docs.veilus.io/engine/chromium/).
 
-## Who Needs an Anti-Detect Browser?
+## 2. Create your first profile
 
-If you look after more than one account on the same platform, these are the usual reasons:
+Click **New profile**. Pick the operating system the profile should present. It defaults to your computer's own OS, which is the safer choice: a profile for a different OS has to imitate more, so Veilus warns you if you pick one. Then pick a market under **Language & Region**, or set the language and timezone yourself, and click **Create Profile**.
 
-| User | Pain Point |
-|------|------------|
-| **Agencies** | Running ad and social accounts for many clients without their logins and data mixing |
-| **E-commerce Sellers** | Keeping each storefront in its own browser, with its own login, cookies and proxy |
-| **Social Media Managers** | Keeping several brand accounts open side by side instead of logging in and out |
-| **QA & Developers** | Checking how a site behaves on different devices, languages and locations |
-| **Researchers** | Collecting public data with real browser profiles |
+Veilus generates a [fingerprint](https://docs.veilus.io/profiles/fingerprinting/) that fits the OS you chose. Click the launch button on the profile's row, keep **Browser Only**, and a browser window opens with that profile's own fingerprint, cookies and storage.
 
-The solution is an **anti-detect browser** — a tool that gives each browser profile its own unique digital fingerprint, so every account looks like it's running on a completely different computer.
+## 3. Give it a proxy
 
-## What Is Veilus?
+Open the profile's panel and go to the **Network** tab. For one profile, fill in **Manual Proxy** (HTTP, SOCKS5 or residential) and click **Test Proxy**. For many profiles, create a **proxy pool** from a list and assign it. [Proxy setup](https://docs.veilus.io/profiles/proxy/) covers both.
 
-Veilus is an **anti-detect browser** built on a native Chromium engine, free for 5 profiles. Here's what makes it different:
+This is the step most people trip over. By default Veilus refuses to launch a profile whose timezone doesn't match where its proxy exits, because a US IP with a Vietnam timezone contradicts itself. With a pool assigned, **Match to proxy** measures the proxy's real exit and proposes the matching timezone. With a manual proxy, set the **Timezone** yourself on the Fingerprint tab. Save, and the profile launches.
 
-### Its Own Patched Chromium
+To check the result, tick the profile and click **Test**. Veilus opens it on a set of fingerprinting test sites, and the **Score** column shows how many passed.
 
-Every profile runs in [Veilus's own build of Chromium](https://docs.veilus.io/engine/chromium/). The fingerprint is applied inside the browser's own C++ code, not injected into pages with JavaScript.
+## 4. Connect an AI assistant
 
-The app around it — your profile list, fingerprint and proxy settings, automation — is a desktop app built with Tauri 2 and Rust. It runs on Windows 10/11 (x64) and macOS 13 or later (Apple Silicon).
+Everything so far works on the Free plan, which gives you 5 profiles on one device. Automation, schedules and the local API/MCP need a paid plan or the 7-day Pro trial. See [plans and license](https://docs.veilus.io/reference/plans-and-license/).
 
-### Fingerprint Engine
+Open **API & MCP** in the sidebar, click **Turn on port** (it listens only on your own computer), create a token, and copy the ready-made snippet for Claude Code, Cursor or Claude Desktop. The [MCP page](https://veilus.io/features/mcp/) shows how the assistant works with Veilus. If you use Claude Code, the Veilus plugin adds skills that walk through the job and stop for your decisions.
 
-Each profile gets [its own fingerprint](https://docs.veilus.io/profiles/fingerprinting/), and its values are generated to fit together the way a real device's do: the operating system, screen, fonts, graphics card and browser version describe one plausible machine instead of a random mix.
+## 5. Ask for the job in one sentence
 
-### Veilus Flow Automation
+Describe the task the way you'd describe it to a colleague: "Open the first profile, go to the login page of our dashboard, write a script that logs in and prints the account name, and test it."
 
-Connect an AI assistant that supports MCP, such as Claude Code or Cursor, and describe the task ([how the MCP server works](https://veilus.io/features/mcp/)). It writes a Playwright script, and Veilus runs it across your profiles. You can also write scripts yourself and add them through the [local REST API](https://docs.veilus.io/reference/rest-api/).
+The assistant opens a real profile, looks at the page, writes a Playwright script and saves it to Veilus Flow. While the script is unapproved, it can trial-run it on up to 3 profiles and read back each profile's output, so it fixes its own mistakes before you look. The [LLM recipe](https://docs.veilus.io/recipes/llm-scripts/) shows each tool call along the way.
 
-Use cases:
-- Pull daily reports from every client dashboard
-- Check listings and prices across your storefronts
-- Collect public product data
-- Run repetitive workflows across 50+ profiles
+## 6. Read it, approve it
 
-### Veilus Sync
+Open **Veilus Flow**. The script carries an **MCP** badge and sits under **Pending approval**. Read the changes, or the full source, then click **Approve this script**. This step exists because an approved script runs unattended with your profiles and their logins. Approval happens in the app, never through the assistant. If the assistant saves a new version later, it goes back to pending. [More on reviewing scripts](https://docs.veilus.io/automation/scripts/).
 
-Keep profiles in step across your machines. [Veilus Sync](https://docs.veilus.io/sync/overview/) syncs them to a Git repository or Google Drive you choose — use a private one — so you can pick up on another computer where you left off.
+## 7. Put it on a schedule
 
-## How It Works
+Ask the assistant to run the approved script every day at 09:00, or create the schedule yourself in the **Schedule** tab: daily, weekly, every few minutes, a cron expression or a single run. A schedule can target a saved filter instead of a fixed list, so profiles you tag later are included automatically. [Schedules](https://docs.veilus.io/automation/schedules/).
 
-Every profile in Veilus gets three layers of isolation:
+Schedules run while Veilus is running and the computer is awake. Turn on **Run in background** in Settings, and closing the window sends Veilus to the tray instead of quitting it.
 
-1. **Unique fingerprint** — websites see a different device for each profile
-2. **Isolated storage** — cookies, localStorage, cache never leak between profiles
-3. **Independent proxy** — each profile routes through a separate IP address
+## What the assistant can't do
 
-Open Profile A and Profile B side by side, and it's as if you're using two different computers on two different networks.
+A few limits are built in. No tool deletes profiles, proxy pools, scripts or schedules: deleting stays in the app, with you. Values you store on profiles, such as logins, only reach scripts you've approved. And at most 16 profile browsers are open at once, counting everything, so a large run waits for a free slot instead of overloading your machine.
 
-## Pricing
+## Where to go next
 
-Veilus starts **free** — 5 browser profiles forever, no trial period, no credit card required. Just download and start managing your accounts. Paid plans are on the [pricing page](https://veilus.io/pricing/).
-
-## Get Started
-
-Ready to give every account its own browser?
-
-- 🌐 **Download**: [veilus.io](https://veilus.io)
-- 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
-- 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
-- 🐙 **GitHub**: [github.com/veilus](https://github.com/veilus)
+- [Quick start in the docs](https://docs.veilus.io/getting-started/quickstart/)
+- [Pricing](https://veilus.io/pricing/)
+- [Telegram](https://t.me/veilusbrowser) for questions, [GitHub](https://github.com/veilus) for bug reports

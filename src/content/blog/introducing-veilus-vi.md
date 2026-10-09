@@ -1,78 +1,67 @@
 ---
-title: "Giới thiệu Veilus: Quản lý nhiều tài khoản trên một máy"
-description: "Veilus là trình duyệt antidetect, miễn phí 5 hồ sơ, chạy trên bản Chromium do Veilus tự vá. Quản lý nhiều tài khoản trên một máy, mỗi profile một fingerprint và proxy riêng."
+title: "Giới thiệu Veilus: Giờ đầu tiên, từ cài đặt tới script chạy theo lịch"
+description: "Đi qua phiên làm việc đầu tiên với Veilus: cài app, tải engine, tạo hồ sơ có proxy, kết nối trợ lý AI qua MCP, duyệt script nó viết và đặt lịch chạy."
 pubDate: "Mar 12 2026"
-updatedDate: "Oct 8 2026"
+updatedDate: "Oct 9 2026"
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: vi
 translationSlug: "introducing-veilus"
 tags:
   - announcement
   - product
+  - tutorial
 ---
 
-Bạn quản lý tài khoản cho nhiều khách hàng, nhiều shop hay nhiều thương hiệu trên cùng một máy. Cả ngày đăng nhập rồi đăng xuất, phiên của tài khoản này lẫn sang tài khoản kia, mọi thứ dồn vào một trình duyệt.
+[Trang chủ](https://veilus.io/vi/) nói Veilus là gì. Bài này cho thấy dùng nó trông thế nào: một lần ngồi, từ lúc cài mới tới khi có một script tự chạy mỗi sáng. Mỗi bước có link tới trang tài liệu ghi đủ chi tiết.
 
-Và nền tảng không chỉ nhìn vào IP. Họ theo dõi **browser fingerprint** — một tổ hợp gồm độ phân giải màn hình, font chữ, WebGL renderer, canvas hash, và hàng chục tín hiệu khác. Cookie xóa được, VPN đổi được, nhưng fingerprint thì không.
+## 1. Cài app, rồi tải engine
 
-**Đó là lý do cần tách mỗi tài khoản ra một trình duyệt riêng.**
+Veilus chạy trên Windows 10 hoặc 11 (x64) và macOS 13 trở lên trên chip Apple Silicon. Tải bộ cài ở [trang tải về](https://veilus.io/vi/download/). Lần mở đầu, Windows và macOS đều không nhận ra nhà phát hành nên bạn bấm qua một cảnh báo: **More info → Run anyway** trên Windows, **Open Anyway** trong Privacy & Security trên macOS. [Hướng dẫn cài đặt](https://docs.veilus.io/vi/getting-started/installation/) ghi đúng từng bước.
 
-## Ai cần trình duyệt anti-detect?
+Bộ cài không kèm trình duyệt. Mở **Settings → Engine & updates** và bấm **Download** cạnh phiên bản gắn nhãn **Latest**. Đó là bản Chromium do Veilus tự dựng, mọi hồ sơ đều chạy trên nó. Engine tải về đầu tiên tự được bật. [Thêm về engine](https://docs.veilus.io/engine/chromium/).
 
-| Đối tượng | Vấn đề thường gặp |
-|-----------|-------------------|
-| **Agency** | Chạy quảng cáo và mạng xã hội cho nhiều khách mà không lẫn đăng nhập, dữ liệu |
-| **Bán hàng đa nền tảng** | Mỗi shop Shopee/Lazada/Amazon một trình duyệt, đăng nhập, cookie và proxy riêng |
-| **Quản lý mạng xã hội** | Mở nhiều tài khoản thương hiệu cạnh nhau, không phải đăng xuất |
-| **QA và lập trình viên** | Kiểm tra website trên nhiều cấu hình thiết bị, ngôn ngữ, vị trí |
-| **Nghiên cứu dữ liệu** | Thu thập dữ liệu công khai bằng hồ sơ trình duyệt thật |
+## 2. Tạo hồ sơ đầu tiên
 
-Nếu bạn gặp những vấn đề trên, Veilus sinh ra là để giải quyết chúng.
+Bấm **New profile**. Chọn hệ điều hành mà hồ sơ sẽ khai với website. Mặc định là hệ điều hành của máy bạn, và đó là lựa chọn an toàn hơn: hồ sơ cho hệ điều hành khác phải giả nhiều thứ hơn, nên Veilus cảnh báo khi bạn chọn. Sau đó chọn một thị trường ở **Language & Region**, hoặc tự đặt ngôn ngữ và múi giờ, rồi bấm **Create Profile**.
 
-## Veilus là gì?
+Veilus sinh một [fingerprint](https://docs.veilus.io/vi/profiles/fingerprinting/) khớp với hệ điều hành bạn chọn. Bấm nút mở trên dòng của hồ sơ, giữ **Browser Only**, một cửa sổ trình duyệt mở ra với fingerprint, cookie và dữ liệu riêng của hồ sơ đó.
 
-Veilus là **trình duyệt antidetect**, miễn phí 5 hồ sơ. Mỗi profile trình duyệt có một fingerprint riêng biệt, nên mỗi tài khoản trông như đang chạy trên một máy tính khác.
+## 3. Gắn proxy
 
-## Chromium do Veilus tự vá
+Mở bảng của hồ sơ và vào tab **Network**. Với một hồ sơ, điền **Manual Proxy** (HTTP, SOCKS5 hoặc residential) rồi bấm **Test Proxy**. Với nhiều hồ sơ, tạo một **proxy pool** từ danh sách rồi gán cho chúng. [Cài đặt proxy](https://docs.veilus.io/vi/profiles/proxy/) nói cả hai cách.
 
-Mỗi profile chạy trên [bản Chromium do Veilus tự vá](https://docs.veilus.io/engine/chromium/). Fingerprint được áp ngay trong mã C++ của trình duyệt, không phải chèn JavaScript vào trang.
+Đây là bước nhiều người vấp nhất. Mặc định Veilus không mở hồ sơ có múi giờ lệch với nơi proxy đi ra, vì IP Mỹ mà múi giờ Việt Nam là tự mâu thuẫn. Khi đã gán pool, **Match to proxy** đo nơi proxy thật sự đi ra và đề xuất múi giờ khớp. Với proxy thủ công, tự đặt **Timezone** ở tab Fingerprint. Lưu lại là hồ sơ mở được.
 
-Ứng dụng quản lý bên ngoài — danh sách profile, cấu hình fingerprint và proxy, tự động hóa — là app desktop viết bằng Tauri 2 và Rust, chạy trên Windows 10/11 (x64) và macOS 13 trở lên (Apple Silicon).
+Để kiểm kết quả, đánh dấu hồ sơ và bấm **Test**. Veilus mở hồ sơ trên một loạt trang kiểm tra fingerprint, cột **Score** cho biết qua được bao nhiêu trang.
 
-## Tính năng chính
+## 4. Kết nối trợ lý AI
 
-### Fingerprint Engine
-Mỗi profile có [fingerprint riêng](https://docs.veilus.io/vi/profiles/fingerprinting/), các giá trị được sinh sao cho khớp nhau như một thiết bị thật: hệ điều hành, màn hình, font chữ, card đồ họa và phiên bản trình duyệt cùng mô tả một chiếc máy hợp lý, không phải một mớ giá trị ngẫu nhiên.
+Mọi bước trên đều dùng được với gói Free: 5 hồ sơ trên một máy. Tự động hoá, lịch chạy và API/MCP cục bộ cần gói trả phí hoặc 7 ngày dùng thử Pro. Xem [gói và giấy phép](https://docs.veilus.io/vi/reference/plans-and-license/).
 
-### Veilus Flow — Tự động hóa
-Kết nối một trợ lý AI có hỗ trợ MCP, như Claude Code hay Cursor, rồi giao việc ([MCP server hoạt động thế nào](https://veilus.io/vi/features/mcp/)): nó viết script Playwright, Veilus chạy script đó trên nhiều profile. Bạn cũng có thể tự viết script rồi đưa vào qua [REST API cục bộ](https://docs.veilus.io/vi/reference/rest-api/). Phù hợp để:
-- Lấy báo cáo hằng ngày từ dashboard của từng khách
-- Kiểm tra giá và gian hàng trên các shop
-- Thu thập dữ liệu sản phẩm
-- Chạy workflow lặp lại trên 50+ profile
+Mở **API & MCP** ở thanh bên, bấm **Turn on port** (chỉ nghe trên máy của bạn), tạo token, rồi chép đoạn cấu hình có sẵn cho Claude Code, Cursor hoặc Claude Desktop. [Trang MCP](https://veilus.io/vi/features/mcp/) cho thấy trợ lý làm việc với Veilus thế nào. Nếu dùng Claude Code, plugin Veilus thêm các skill đi qua từng bước và dừng lại chờ bạn quyết.
 
-### Veilus Sync
-Đồng bộ profile giữa các máy của bạn qua Git repository hoặc Google Drive do bạn chọn — nên dùng loại riêng tư. Sang máy khác là làm việc tiếp được ngay.
+## 5. Giao việc bằng một câu
 
-## Hoạt động thế nào?
+Mô tả việc như nói với đồng nghiệp: "Mở hồ sơ đầu tiên, vào trang đăng nhập dashboard của mình, viết script đăng nhập rồi in ra tên tài khoản, và chạy thử."
 
-Mỗi profile trong Veilus có 3 lớp cách ly:
+Trợ lý mở một hồ sơ thật, xem trang, viết một script Playwright và lưu vào Veilus Flow. Khi script chưa được duyệt, nó được chạy thử trên tối đa 3 hồ sơ và đọc lại kết quả từng hồ sơ, nên nó tự sửa lỗi trước khi tới lượt bạn xem. [Hướng dẫn cho LLM](https://docs.veilus.io/vi/recipes/llm-scripts/) ghi từng lời gọi công cụ trên đường đi.
 
-1. **Fingerprint riêng** — website nhìn thấy một thiết bị khác cho mỗi profile
-2. **Storage riêng** — cookies, localStorage, cache hoàn toàn tách biệt
-3. **Proxy riêng** — mỗi profile dùng IP khác nhau
+## 6. Đọc, rồi duyệt
 
-Mở Profile A và Profile B cạnh nhau — như đang dùng hai máy tính khác nhau, trên hai mạng khác nhau.
+Mở **Veilus Flow**. Script mang nhãn **MCP** và nằm trong **Pending approval**. Đọc phần thay đổi, hoặc toàn bộ mã, rồi bấm **Approve this script**. Bước này có vì script đã duyệt sẽ chạy không người trông, với hồ sơ và đăng nhập của bạn. Việc duyệt làm trong app, không bao giờ qua trợ lý. Nếu trợ lý lưu bản mới, script quay lại chờ duyệt. [Thêm về duyệt script](https://docs.veilus.io/automation/scripts/).
 
-## Free không?
+## 7. Đặt lịch
 
-**Free.** 5 profile vĩnh viễn, không giới hạn thời gian, không cần thẻ tín dụng. Tải về là dùng được luôn. Các gói trả phí xem ở [trang giá](https://veilus.io/vi/pricing/).
+Bảo trợ lý chạy script đã duyệt mỗi ngày lúc 09:00, hoặc tự tạo lịch ở tab **Schedule**: hằng ngày, hằng tuần, vài phút một lần, biểu thức cron hoặc chạy một lần. Lịch có thể nhắm vào một bộ lọc đã lưu thay vì danh sách cố định, nên hồ sơ bạn gắn thẻ sau này tự được tính vào. [Lịch chạy](https://docs.veilus.io/automation/schedules/).
 
-## Bắt đầu
+Lịch chỉ chạy khi Veilus đang chạy và máy không ngủ. Bật **Run in background** trong Settings, đóng cửa sổ sẽ đưa Veilus xuống khay hệ thống thay vì thoát.
 
-Sẵn sàng cho mỗi tài khoản một trình duyệt riêng?
+## Những gì trợ lý không làm được
 
-- 🌐 **Tải về**: [veilus.io](https://veilus.io)
-- 💬 **Telegram**: [t.me/veilusbrowser](https://t.me/veilusbrowser)
-- 🐦 **X**: [@veilusbrowser](https://x.com/veilusbrowser)
-- 🐙 **GitHub**: [github.com/veilus](https://github.com/veilus)
+Vài giới hạn có sẵn. Không công cụ nào xoá hồ sơ, proxy pool, script hay lịch: việc xoá ở lại trong app, trong tay bạn. Giá trị bạn lưu trên hồ sơ, như thông tin đăng nhập, chỉ tới được script đã duyệt. Và cùng lúc mở tối đa 16 trình duyệt hồ sơ, tính tất cả các đường, nên một lượt chạy lớn sẽ chờ chỗ trống thay vì làm quá tải máy.
+
+## Đọc tiếp
+
+- [Bắt đầu nhanh trong tài liệu](https://docs.veilus.io/vi/getting-started/quickstart/)
+- [Bảng giá](https://veilus.io/vi/pricing/)
+- [Telegram](https://t.me/veilusbrowser) để hỏi, [GitHub](https://github.com/veilus) để báo lỗi
