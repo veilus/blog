@@ -4,6 +4,7 @@ description: "How to connect Claude Code, Cursor or Claude Desktop to Veilus ove
 pubDate: "Oct 11 2026"
 heroImage: '../../assets/hero-mcp-demo.jpg'
 lang: en
+translationSlug: "claude-code-anti-detect-browser-mcp-vi"
 tags:
   - mcp
   - tutorial
