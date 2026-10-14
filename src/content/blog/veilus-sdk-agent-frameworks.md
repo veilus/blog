@@ -66,10 +66,13 @@ URL = "https://example.com"
 
 async def main() -> None:
     veilus = Veilus()
-    profile_id = (await veilus.list_profiles())[0]["id"]
-    launched = await veilus.launch(profile_id)
+    profile = (await veilus.list_profiles())[0]
+    cdp_url = profile.get("cdpUrl") or (await veilus.launch(profile["id"]))["cdpUrl"]
 
-    browser = Browser(cdp_url=launched["cdpUrl"], keep_alive=True)
+    # keep_alive: leave the profile running; no_viewport: never resize its tabs.
+    browser = Browser(
+        cdp_url=cdp_url, keep_alive=True, headless=False, no_viewport=True
+    )
     # browser-use forces tool_choice; claude-haiku-5-5 accepts that, while
     # claude-sonnet-5-5 and claude-opus-5-5 answer HTTP 400.
     llm = ChatAnthropic(
@@ -82,8 +85,6 @@ async def main() -> None:
     )
     history = await agent.run(max_steps=5)
     print((history.final_result() or "").strip().strip("\"'."))
-
-    await veilus.stop(profile_id)
 
 
 asyncio.run(main())
