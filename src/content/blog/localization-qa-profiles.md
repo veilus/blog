@@ -1,7 +1,7 @@
 ---
 title: "Test Your Site in Eight Languages and Time Zones Without Eight Laptops"
 description: "How to check a website's localization — language, dates, currency, redirects — across many browser profiles with their own language and timezone, and run one Playwright check on all of them."
-pubDate: "Oct 15 2026"
+pubDate: "Oct 14 2026"
 heroImage: '../../assets/hero-profiles.jpg'
 lang: en
 translationSlug: "localization-qa-profiles-vi"

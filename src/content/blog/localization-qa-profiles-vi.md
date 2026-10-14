@@ -1,7 +1,7 @@
 ---
 title: "Kiểm thử website ở tám ngôn ngữ và múi giờ mà không cần tám chiếc laptop"
 description: "Cách kiểm tra bản địa hoá của website — ngôn ngữ, ngày giờ, tiền tệ, chuyển hướng — trên nhiều hồ sơ trình duyệt, mỗi hồ sơ một ngôn ngữ và múi giờ, rồi chạy một script Playwright trên tất cả."
-pubDate: "Oct 15 2026"
+pubDate: "Oct 14 2026"
 heroImage: '../../assets/hero-profiles.jpg'
 lang: vi
 translationSlug: "localization-qa-profiles"
