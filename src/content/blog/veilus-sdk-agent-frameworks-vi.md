@@ -94,7 +94,7 @@ asyncio.run(main())
 
 ## Công cụ đã chạy thử trên hồ sơ thật
 
-Ngày 14/10/2026, chúng tôi chạy mỗi công cụ dưới đây một ví dụ trên một hồ sơ Veilus ở macOS. Mỗi ví dụ mở một trang, đọc tiêu đề rồi để hồ sơ tiếp tục chạy. Cả mười đều đạt:
+Ngày 14/10/2026, chúng tôi chạy một ví dụ cho mỗi công cụ dưới đây trên một hồ sơ Veilus ở macOS. Mỗi ví dụ mở một trang, đọc tiêu đề rồi để hồ sơ tiếp tục chạy. Cả mười đều đạt:
 
 | Công cụ | Phiên bản đã thử |
 |---|---|
@@ -113,10 +113,10 @@ Các ví dụ và bảng này, kèm phiên bản và ngày, nằm ở [examples/
 
 ## Chuột và gõ phím giống người
 
-Script bạn viết bằng Playwright tự điều khiển chuột và bàn phím. Nếu bạn muốn đường đi chuột, cú cuộn con lăn và nhịp gõ giống người trong tự động hoá của riêng mình, chúng tôi đã công khai các mô hình đứng sau công cụ click, type và scroll của Veilus thành một crate Rust mã nguồn mở, [`veilus-human-input`](https://crates.io/crates/veilus-human-input) (MIT hoặc Apache-2.0). Mọi hàm đều thuần: nhận tham số và bộ sinh số ngẫu nhiên, trả về các điểm, delta con lăn và khoảng thời gian; gửi chúng tới trình duyệt là việc của bạn.
+Script bạn viết bằng Playwright tự điều khiển chuột và bàn phím. Nếu bạn muốn đường đi chuột, cú cuộn con lăn và nhịp gõ giống người trong tự động hoá của riêng mình, chúng tôi đã công khai các mô hình rút từ mã đứng sau công cụ click, type và scroll của Veilus thành một crate Rust mã nguồn mở, [`veilus-human-input`](https://crates.io/crates/veilus-human-input) (MIT hoặc Apache-2.0). Mọi hàm đều thuần: nhận tham số và bộ sinh số ngẫu nhiên, trả về các điểm, delta con lăn và khoảng thời gian; gửi chúng tới trình duyệt là việc của bạn.
 
-Chúng tôi so tham số mặc định của crate với một người trên một trang: 20 cú click, ba câu gõ và một lần cuộn dài. Với tham số mặc định giữ nguyên, bộ phân loại kiểm chéo tách được chuột trong mọi lần (1,00; 0,5 nghĩa là nó không phân biệt được hai bên). Sau khi đặt `tick`, khoảng cách giữa các sự kiện con trỏ, bằng chu kỳ báo của con chuột đã ghi, điểm chuột là 0,38 ± 0,14 và điểm bàn phím là 0,59 ± 0,05. Đó là một phiên của một người, trên macOS, với chuột có con lăn, nên hãy đọc là "gần với người này", không phải "gần với mọi người". Hãy đặt `tick` theo thiết bị bạn đang mô phỏng trước tiên. Chi tiết ở [trang docs](https://docs.veilus.io/reference/human-input/) và [bài giới thiệu crate](/blog/veilus-human-input-rust-crate-vi/).
+Chúng tôi so tham số mặc định của crate với một người trên một trang: 20 cú click, ba câu gõ và một lần cuộn dài. Với tham số mặc định giữ nguyên, bộ phân loại kiểm chéo tách được chuột trong mọi lần (1,00; 0,5 nghĩa là nó không phân biệt được hai bên). Sau khi đặt `tick`, khoảng thời gian giữa các sự kiện con trỏ, bằng chu kỳ báo của con chuột đã ghi, điểm chuột là 0,38 ± 0,14 và điểm bàn phím là 0,59 ± 0,05. Đó là một phiên của một người, trên macOS, với chuột có con lăn, nên hãy đọc là "gần với người này", không phải "gần với mọi người". Hãy đặt `tick` theo thiết bị bạn đang mô phỏng trước tiên. Chi tiết ở [trang docs](https://docs.veilus.io/reference/human-input/) và [bài giới thiệu crate](/blog/veilus-human-input-rust-crate-vi/).
 
-## Điều này không làm được gì
+## Những gì SDK không làm
 
 Một công cụ đang kết nối vẫn là một công cụ đang kết nối. Veilus giữ danh tính của hồ sơ; nó không thể che việc có một client tự động hoá đang điều khiển trang khi client đó còn gắn vào. SDK cho agent của bạn một trình duyệt có danh tính nhất quán để làm việc. Nó không đổi việc agent làm ở đó, và không quyết định một trang web đối xử với lưu lượng ấy ra sao.
