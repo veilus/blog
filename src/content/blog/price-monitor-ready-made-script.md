@@ -1,6 +1,6 @@
 ---
 title: "Track Product Prices with a Ready-Made Veilus Script"
-description: "A step-by-step guide to monitoring prices on product pages with a tested Veilus Flow script, a dataset and a schedule, with optional alerts to Slack or Discord."
+description: "A step-by-step guide to monitoring prices on product pages with a tested Veilus Flow script, a dataset and a schedule, with optional alerts to a webhook."
 pubDate: "Oct 25 2026"
 heroImage: '../../assets/hero-flow-approve.jpg'
 lang: en
@@ -25,7 +25,7 @@ For each row of a dataset, the script:
 3. turns it into a number,
 4. compares it with the number saved on the previous run.
 
-At the end it prints one summary line, and optionally posts the changes to a webhook. Between pages it pauses for one second, so it does not hammer the site.
+At the end it prints one summary line, and optionally posts the changes to a webhook. A page whose price cannot be read does not stop the run: it is listed under `failed`, the other pages are still checked, and the run is marked as failed so you notice. Between pages it pauses for one second, so it does not hammer the site.
 
 ## Set it up in three steps
 
@@ -61,9 +61,9 @@ RESULT {"checked":2,"changed":[{"url":"https://books.toscrape.com/catalogue/a-li
 
 Both outputs come from runs on a real Veilus profile on 25 October 2026. The `0` was our own edit to the state file, not a real price change on the site.
 
-### Alerts to Slack or Discord
+### Alerts to a webhook
 
-If you add a profile variable called `WEBHOOK_URL` with a Slack or Discord webhook address, the script sends a POST with a short text listing each changed URL with its old and new price. It sends the alert before it saves the new prices, so if the webhook fails the run fails too, and the next run still sees the change. We have not exercised this path against a real webhook, so we are describing what the code does, not showing you a message.
+If you add a profile variable called `WEBHOOK_URL` with a webhook address that accepts JSON, the script sends a POST with a short text listing each changed URL with its old and new price. The text goes in both a `text` field, which Slack reads, and a `content` field, which Discord reads. It sends the alert before it saves the new prices, so if the webhook fails the run fails too, and the next run still sees the change. We have not exercised this path against a real webhook, so we are describing what the code does, not showing you a message.
 
 ## Make it yours
 
