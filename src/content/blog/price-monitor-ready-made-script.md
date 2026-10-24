@@ -1,5 +1,5 @@
 ---
-title: "Track Competitor Prices in 10 Minutes with a Ready-Made Script"
+title: "Track Product Prices with a Ready-Made Veilus Script"
 description: "A step-by-step guide to monitoring prices on product pages with a tested Veilus Flow script, a dataset and a schedule, with optional alerts to Slack or Discord."
 pubDate: "Oct 25 2026"
 heroImage: '../../assets/hero-flow-approve.jpg'
@@ -10,7 +10,7 @@ tags:
   - guide
 ---
 
-Checking prices by hand does not scale. You open ten tabs, copy numbers into a sheet, and by the time you finish the first page has changed. A quick script fixes the typing, but a bare script that fetches pages from one machine with one identity tends to get odd answers or lose its session, and then you are debugging the monitor instead of reading prices.
+Checking prices by hand does not scale. You open ten tabs, copy numbers into a sheet, and by the time you finish, prices may already have moved. A quick script fixes the typing, but a bare script that fetches pages from one machine with one identity can get different answers from a normal visitor or lose its session, and then you are debugging the monitor instead of reading prices.
 
 We published a ready-made price monitor in the public [veilus/sdk](https://github.com/veilus/sdk/tree/main/solutions/price-monitor) repo. It is one script, one CSV and a three-step setup. This post walks through it.
 
@@ -29,7 +29,7 @@ At the end it prints one summary line, and optionally posts the changes to a web
 
 ## Set it up in three steps
 
-**1. Paste and approve the script.** In Veilus Flow, open Scripts, create a script and paste the contents of `script.ts`. Save it, then approve it. This step is easy to miss: a saved script only receives dataset rows after it is approved. When we ran it unapproved, it failed with "no rows".
+**1. Paste and approve the script.** In Veilus Flow, open Scripts, create a script and paste the contents of `script.ts`. Save it, then approve it. This step is easy to miss: a saved script only receives dataset rows after it is approved. When we ran it before approving it, the run stopped with a "no rows" error.
 
 **2. Import the dataset.** The repo ships `dataset.csv` with two columns, `URL` and `SELECTOR`, and one row per product page:
 
@@ -45,13 +45,13 @@ Import it as a dataset and assign it to the profile. The `SELECTOR` column is op
 
 ## Read the result
 
-Every run ends with one line starting with `RESULT`. On our first run, with nothing saved yet, the monitor only recorded prices:
+Every run ends with one line starting with `RESULT`. When no price has changed since the last run, it looks like this:
 
 ```
 RESULT {"checked":2,"changed":[]}
 ```
 
-The first run never reports changes, because there is nothing to compare with. A second run with the same prices gives the same line.
+The first run never reports changes, because there is nothing to compare with yet: it only records the prices.
 
 To see the alert path, we edited the saved price of the first book to `0` and ran the script again. The monitor saw a difference and reported it:
 
@@ -59,7 +59,7 @@ To see the alert path, we edited the saved price of the first book to `0` and ra
 RESULT {"checked":2,"changed":[{"url":"https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html","from":0,"to":51.77}]}
 ```
 
-Both outputs were measured on 25 October 2026 on a real profile. The `0` was our own edit to the state file, not a real price change on the site.
+Both outputs come from runs on a real Veilus profile on 25 October 2026. The `0` was our own edit to the state file, not a real price change on the site.
 
 ### Alerts to Slack or Discord
 
@@ -76,7 +76,7 @@ One limit worth knowing: the price parser treats the last `.` or `,` as the deci
 
 ## Be a good citizen
 
-Monitoring prices is only fine when you do it politely.
+Be polite about it.
 
 - Read the site's terms of service before you monitor it. Some forbid automated access.
 - Check `robots.txt` and respect it.
