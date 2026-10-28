@@ -2,7 +2,7 @@
 title: "Check That Every Account Is Still Signed In, With a Read-Only Script"
 description: "A ready-made Veilus script that checks whether each profile is still signed in to your own account and reads a few numbers, without ever signing in for you."
 pubDate: "Oct 28 2026"
-heroImage: '../../assets/hero-flow-approve.jpg'
+heroImage: '../../assets/hero-profiles.jpg'
 lang: en
 tags:
   - automation
@@ -16,7 +16,7 @@ We published a ready-made script for this in the public [veilus/sdk](https://git
 
 ## What it does, and what it never does
 
-The session lives inside the Veilus profile: its cookies, its fingerprint, its proxy. You sign in once yourself, in the profile's window. The script then opens a page in that profile and reads it.
+The session lives inside the Veilus profile, in its cookies, next to its fingerprint and proxy. You sign in once yourself, in the profile's window. The script then opens a page in that profile and reads it.
 
 It only reads. Specifically:
 
@@ -51,7 +51,7 @@ https://httpbin.org/response-headers?Set-Cookie=veilus_demo_session%3D1%3B+Max-A
 RESULT {"platform":"demo","status":"logged_in","metrics":{"session":{"value":1,"raw":"{\n  \"cookies\": {\n    \"veilus_demo_sessio"}}}
 ```
 
-`https://httpbin.org/cookies/delete?veilus_demo_session` signs the demo out again. The signed-out line above comes from a run on a real Veilus profile on 28 October 2026.
+`https://httpbin.org/cookies/delete?veilus_demo_session` signs the demo out again. Both lines above come from runs on a real Veilus profile on 28 October 2026.
 
 `value` is the first number in the element's text. `raw` keeps up to 40 characters of the text as it was, so a value like `1.2K` stays readable.
 
